@@ -61,7 +61,7 @@ public class BirdsAlgorithm extends MetaHeuristic {
 //		System.out.println(noi+" "+Solution.getNON());
         while (Solution.getNON() < numberOfIterations) {
             for (int i = 0; i < numberOfFlapping; i++) {
-                flyFlock();
+                flyFlock(); //TODO: Burada her seferinde farklı bir i değeri için exception atıyor
             }
 //			System.out.println("Flock flied");
             replaceLeader();
@@ -121,6 +121,8 @@ public class BirdsAlgorithm extends MetaHeuristic {
             bests[1] = bestOther;
         } else if (leader.checkBestNeighbour().getFitness() <= currentSolutionTODO.getFitness()) {
             bests[1] = leader.getBestNeighbour();
+        } else {
+            bests[1] = flock.get(1);
         }
 
         currentSolutionTODO = flock.get(2);
@@ -129,6 +131,8 @@ public class BirdsAlgorithm extends MetaHeuristic {
             bests[2] = bestOther;
         } else if (leader.checkBestNeighbour().getFitness() <= currentSolutionTODO.getFitness()) {
             bests[2] = leader.getBestNeighbour();
+        } else {
+            bests[2] = flock.get(2);
         }
 
         for (int i = 3; i < numberOfBirds; i++) {
@@ -138,6 +142,9 @@ public class BirdsAlgorithm extends MetaHeuristic {
                 bests[i] = bestOther;
             } else if (flock.get(i - 2).checkBestNeighbour().getFitness() <= currentSolutionTODO.getFitness()) {
                 bests[i] = flock.get(i - 2).getBestNeighbour();
+            }  //TODO: SORUN BURADA ELSE OLMAMASI, İKİ DURUM DA GERÇEKLEŞMEDİĞİ TAKDİRDE BESTS[İ] NULL KALIYOR
+            else {
+                bests[i] = flock.get(i);
             }
         }
 
@@ -146,7 +153,7 @@ public class BirdsAlgorithm extends MetaHeuristic {
         //replace the current birds with their best nghbrs, if they are better
         for (int i = 0; i < numberOfBirds; i++) {
 //			System.out.println(flock.get(i)+": "+flock.get(i).getNeighbourSet());
-            if (flock.get(i).getFitness() >= bests[i].getFitness()) {
+            if (flock.get(i).getFitness() >= bests[i].getFitness()) { //TODO: O yüzden de burası patlıyor
                 flock.remove(i);
                 flock.add(i, bests[i]);
             }
@@ -207,7 +214,7 @@ public class BirdsAlgorithm extends MetaHeuristic {
                 flock.remove(i);
                 flock.add(i, bests[i]);
             }
-        }
+        } 
 //		System.out.println("Flock after one flapping: "+flock);
     }
 
