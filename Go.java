@@ -35,10 +35,10 @@ public class Go {
                         "51 3 10 1", "Parameters", JOptionPane.QUESTION_MESSAGE);
         try {
             scanner = new Scanner(params);
-            numberOfInitialSolutions = scanner.nextInt();
-            numberOfNeighborSolutions = scanner.nextInt();
-            numberOfTours = scanner.nextInt();
-            numberOfSharedWithNextSolution = scanner.nextInt();
+            numberOfInitialSolutions = scanner.nextInt(); // 53
+            numberOfNeighborSolutions = scanner.nextInt(); // 3
+            numberOfTours = scanner.nextInt(); // 10
+            numberOfSharedWithNextSolution = scanner.nextInt(); //1
             @SuppressWarnings("unused")
             BirdsAlgorithm ba = new BirdsAlgorithm(numberOfInitialSolutions, numberOfNeighborSolutions, numberOfTours, numberOfSharedWithNextSolution, 1, 1, 1, file);
         } catch (Exception e) {

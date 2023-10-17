@@ -4,13 +4,13 @@ import javax.swing.JOptionPane;
 
 
 public class BirdsAlgorithm extends MetaHeuristic {
-    private int numberOfBirds;//# of birds, n
-    private int numberOfNeighbors;//# of neighbors, k
+    private int numberOfBirds; //# of birds, n
+    private int numberOfNeighbors; //# of neighbors, k
 
-    private int overLapFactor;//overlap factor, x
-    private int numberOfIterations;//# of iterations, K (in this implementation, creating a neighbour counts for an iteration)
-    private Population flock;//flock of birds (solutions) 0 is the leader and the following elements
-    //	of the ArrayList(population) are listed as follows.  See that odd ones are on the left and even one
+    private int overLapFactor; //overlap factor, x
+    private int numberOfIterations; //# of iterations, K (in this implementation, creating a neighbour counts for an iteration)
+    private Population flock; //flock of birds (solutions) 0 is the leader and the following elements
+                              //	of the ArrayList(population) are listed as follows.  See that odd ones are on the left and even one
 //	are on the right
 //					0
 //				1		2
@@ -95,7 +95,7 @@ public class BirdsAlgorithm extends MetaHeuristic {
     }
 
     public void flyFlock() {
-//ku� �nce kendi kom�u k�mesine bakacak, e�er iyile�mezse �ndeki ku�tan kom�u isticek.
+//kuş önce kendi komutu k�mesine bakacak, e�er iyile�mezse �ndeki ku�tan kom�u isticek.
 
         Solution leader, currentSolutionTODO, bestOther;//best 1 used for repalcing the leader, best other used for transferring following birds
         //create neighbors of each solution

@@ -20,7 +20,7 @@ public class MetaHeuristic {
 
     public void readFlowMatrixAndDistanceMatrixFile() {
         Scanner s;
-        int numberOfPeople;//# of people or offices
+        int numberOfPeople; //# of people or offices
         try {
             s = new Scanner(new File(input));
             numberOfPeople = s.nextInt();

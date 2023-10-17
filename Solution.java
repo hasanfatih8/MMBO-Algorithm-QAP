@@ -8,9 +8,9 @@ public class Solution implements Comparable, Cloneable {
      */
     private int permutation[]; //permutation has length n+1, index 0 is not used
     //because component types in feeder will be assigned to slots 1 to n
-    private int[][] affinity, distance;//aff and dist has length n+1xn+1, index 0 is not used
+    private int[][] affinity, distance;//aff and dist has length n+1xn+1, index 0 is numberOfTypes used
     private double cost;
-    private static int not; // TODO
+    private static int numberOfTypes; // TODO
     private ArrayList<Solution> neighbourSet;
     private static int numberOfNeighborsCreated = 0;//counter designed for counting # of ngbrs created. Criterion used for stopping BirdsAlgorithm.
 
@@ -68,10 +68,10 @@ public class Solution implements Comparable, Cloneable {
         for (int i = 1; i < affinity.length; i++) {
             set.add(i);
         }
-        not = set.size();
-        permutation = new int[not + 1];
+        numberOfTypes = set.size();
+        permutation = new int[numberOfTypes + 1];
         while (!set.isEmpty()) {
-            k = 1 + (int) (Math.random() * (not));
+            k = 1 + (int) (Math.random() * (numberOfTypes));
             if (set.contains(k)) {
                 permutation[++j] = k;
                 set.remove(k);
@@ -106,9 +106,9 @@ public class Solution implements Comparable, Cloneable {
     public Solution neighbour() {
         int conf[] = new int[permutation.length];
         int ex1, ex2;
-        ex1 = 1 + (int) (Math.random() * not);
+        ex1 = 1 + (int) (Math.random() * numberOfTypes);
         do {
-            ex2 = 1 + (int) (Math.random() * not);
+            ex2 = 1 + (int) (Math.random() * numberOfTypes);
         } while (ex1 == ex2);
         for (int i = 0; i < conf.length; i++) {
             conf[i] = permutation[i];
@@ -242,7 +242,7 @@ public class Solution implements Comparable, Cloneable {
      * @return
      */
     public static int getNOT() {
-        return not;
+        return numberOfTypes;
     }
 
     /**
