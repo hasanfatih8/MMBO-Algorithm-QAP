@@ -52,14 +52,13 @@ public class BirdsAlgorithm extends MetaHeuristic {
         this.sortAccordingToPerformance = sortAccordingToPerformance;
         this.input = input;
         checkInputFileFormatAndRead();
-//		System.out.println(flowMap);
         startTime = System.currentTimeMillis();
         flock = new Population();
         createInitialFlock();
-        Solution.resetNON();
-        numberOfIterations = (int) Math.pow(Solution.getNOT(), 3);
-//		System.out.println(noi+" "+Solution.getNON());
-        while (Solution.getNON() < numberOfIterations) {
+        Solution.resetNumberOfNeighborsCreated();
+        numberOfIterations = (int) Math.pow(Solution.getNumberOfTypes(), 3);
+//		System.out.println(noi+" "+Solution.getNumberOfNeighborsCreated());
+        while (Solution.getNumberOfNeighborsCreated() < numberOfIterations) {
             for (int i = 0; i < numberOfFlapping; i++) {
                 flyFlock(); //TODO: Burada her seferinde farklı bir i değeri için exception atıyor
             }
@@ -69,7 +68,7 @@ public class BirdsAlgorithm extends MetaHeuristic {
             sortTheSuccessors();
 //			System.out.println("Successors sorted");
             leaderImproves = true;
-//			System.out.println(Solution.getNON());
+//			System.out.println(Solution.getNumberOfNeighborsCreated());
         }
         writeResults();
     }
@@ -79,7 +78,6 @@ public class BirdsAlgorithm extends MetaHeuristic {
      * sorts them according to their performance (fitness) if the initialFlockSortedAccToPerf paramater
      * is given as 2 (see kuslar-150110.doc).
      *
-     * @param sorted TODO
      */
     public void createInitialFlock() {
         for (int i = 0; i < numberOfBirds; i++) {
@@ -317,7 +315,7 @@ public class BirdsAlgorithm extends MetaHeuristic {
 //	    try {
 //	        BufferedWriter out = new BufferedWriter(new FileWriter(res,true));
 //	        endTime=(System.currentTimeMillis()-startTime)/(double) 1000;
-//	        out.write(input+"\t"+flock.getMin().getFitness()+"\t"+nob+"\t"+non+"\t"+nof+"\t"+olf+"\t"+Solution.getNON()+"\t"+endTime+"\t"+(density)+"\t"+Solution.getNOT()+"\t\n");
+//	        out.write(input+"\t"+flock.getMin().getFitness()+"\t"+nob+"\t"+non+"\t"+nof+"\t"+olf+"\t"+Solution.getNumberOfNeighborsCreated()+"\t"+endTime+"\t"+(density)+"\t"+Solution.getNumberOfTypes()+"\t\n");
 //	        out.close();
 //	    } catch (IOException e) {
 //	    	System.out.println(e);

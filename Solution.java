@@ -6,18 +6,15 @@ public class Solution implements Comparable, Cloneable {
     /**
      * n denotes number of people and offices.
      */
-    private int permutation[]; //permutation has length n+1, index 0 is not used
-    //because component types in feeder will be assigned to slots 1 to n
-    private int[][] affinity, distance;//aff and dist has length n+1xn+1, index 0 is numberOfTypes used
+    private int permutation[]; //permutation has length n+1, index 0 is not used because component types in feeder will be assigned to slots 1 to n
+    private int[][] affinity, distance; //affinity and distance has length n+1 x n+1, index 0 is used for numberOfTypes
     private double cost;
-    private static int numberOfTypes; // TODO
+    private static int numberOfTypes;
     private ArrayList<Solution> neighbourSet;
-    private static int numberOfNeighborsCreated = 0;//counter designed for counting # of ngbrs created. Criterion used for stopping BirdsAlgorithm.
+    private static int numberOfNeighborsCreated = 0; //counter designed for counting # of neighbors created. Criterion used for stopping BirdsAlgorithm.
 
     /**
      * creates a solution with the given affinity and distance matrices
-     *
-     * @param ps
      */
     public Solution(int[][] affinity, int[][] distance) {
         this.affinity = affinity;
@@ -27,11 +24,7 @@ public class Solution implements Comparable, Cloneable {
     }
 
     /**
-     * creates a solution with the given affinity and distance matrices
-     * will be used for creating a neighbor and cloning
-     *
-     * @param ps
-     * @param conf
+     * creates a solution with the given affinity and distance matrices will be used for creating a neighbor and cloning
      */
     public Solution(int[][] affinity, int[][] distance, int fc[]) {
         this.affinity = affinity;
@@ -42,8 +35,6 @@ public class Solution implements Comparable, Cloneable {
 
     /**
      * returns the cost, fitness value of this solution
-     *
-     * @return
      */
     public double getCost() {
         return cost;
@@ -51,8 +42,6 @@ public class Solution implements Comparable, Cloneable {
 
     /**
      * written for genetic algorithm and returns cost of this solution object
-     *
-     * @return
      */
     public double getFitness() {
         return getCost();
@@ -100,10 +89,8 @@ public class Solution implements Comparable, Cloneable {
     /**
      * creates a new Solution object as a neighbor of this solution.
      * This new Solution object is created by simply swapping contents of randomly chosen two slots.
-     *
-     * @return Solution object
      */
-    public Solution neighbour() {
+    public Solution randomSwapMutation() {
         int conf[] = new int[permutation.length];
         int ex1, ex2;
         ex1 = 1 + (int) (Math.random() * numberOfTypes);
@@ -118,15 +105,16 @@ public class Solution implements Comparable, Cloneable {
         return new Solution(affinity, distance, conf);
     }
 
+    //TODO: Write other mutation, local search and crossover methods
+    
+
     /**
      * cretaes a neighbor Set of this solution which includes non elements
-     *
-     * @param non
      */
     public void createNeighborSet(int nongbr) {
         neighbourSet = new ArrayList<Solution>();
         for (int i = 0; i < nongbr; i++) {
-            neighbourSet.add(neighbour());
+            neighbourSet.add(randomSwapMutation());
             numberOfNeighborsCreated++;
         }
         sortNeighbours();
@@ -134,30 +122,24 @@ public class Solution implements Comparable, Cloneable {
 
     /**
      * returns best neighbour of this solution and removes it from the neighbor set
-     *
-     * @return Solution
      */
     public Solution getBestNeighbour() {
-        Solution n = neighbourSet.get(0);
+        Solution bestNeighbour = neighbourSet.get(0);
         neighbourSet.remove(0);
-        return n;
+        return bestNeighbour;
     }
 
     /**
      * returns best neighbor of this solution and DOES NOT remove it from the neighbor set
-     *
-     * @return Solution
      */
     public Solution checkBestNeighbour() {
-        Solution n = neighbourSet.get(0);
-        return n;
+        Solution bestNeighbour = neighbourSet.get(0);
+        return bestNeighbour;
     }
 
     /**
      * adds the given solution (n) to the neighbor set of this solution
      * adding a new solution to the neighbor list requires resorting that list
-     *
-     * @param n
      */
     public void addNeighbour(Solution n) {
         neighbourSet.add(n);
@@ -175,8 +157,6 @@ public class Solution implements Comparable, Cloneable {
 
     /**
      * returns the neighbor set of this solution
-     *
-     * @return
      */
     public ArrayList<Solution> getNeighbourSet() {
         return neighbourSet;
@@ -204,10 +184,8 @@ public class Solution implements Comparable, Cloneable {
 
     /**
      * returns the permutation (feeder configuration) of a problem
-     *
-     * @return
      */
-    public int[] getFC() {
+    public int[] getFeederConfiguration() {
         return permutation;
     }
 
@@ -227,7 +205,7 @@ public class Solution implements Comparable, Cloneable {
     }
 
     public boolean equals(Solution s) {
-        int[] sfc = s.getFC();
+        int[] sfc = s.getFeederConfiguration();
         boolean same = true;
         for (int i = 1; i < permutation.length; i++) {
             same = permutation[i] == sfc[i];
@@ -238,19 +216,17 @@ public class Solution implements Comparable, Cloneable {
 
     /**
      * returns number of types (people, offices) for this solution
-     *
-     * @return
      */
-    public static int getNOT() {
+    public static int getNumberOfTypes() {
         return numberOfTypes;
     }
 
     /**
-     * returns number of neighbors created so far from the last call of resetNON()
+     * returns number of neighbors created so far from the last call of resetNumberOfNeighborsCreated()
      *
      * @return
      */
-    public static int getNON() {
+    public static int getNumberOfNeighborsCreated() {
         return numberOfNeighborsCreated;
     }
 
@@ -258,7 +234,7 @@ public class Solution implements Comparable, Cloneable {
      * resets the number of neighbors to zero
      * should be called when an algorithm starts
      */
-    public static void resetNON() {
+    public static void resetNumberOfNeighborsCreated() {
         numberOfNeighborsCreated = 0;
     }
 }
