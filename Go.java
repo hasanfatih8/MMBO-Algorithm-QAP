@@ -35,7 +35,7 @@ public class Go {
                         "51 3 10 1", "Parameters", JOptionPane.QUESTION_MESSAGE);
         try {
             scanner = new Scanner(params);
-            numberOfInitialSolutions = scanner.nextInt(); // 53
+            numberOfInitialSolutions = scanner.nextInt(); // 51
             numberOfNeighborSolutions = scanner.nextInt(); // 3
             numberOfTours = scanner.nextInt(); // 10
             numberOfSharedWithNextSolution = scanner.nextInt(); //1

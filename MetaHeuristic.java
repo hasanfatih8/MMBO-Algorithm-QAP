@@ -3,11 +3,11 @@ import java.util.*;
 
 
 public class MetaHeuristic {
-    protected Solution cs, bs; // TODO Unused... Kafa yorma şu anlık
-    protected String res; // TODO
-    protected int[][] affinity, distance; //aff and dist has length n+1xn+1, index 0 is not used
+    protected Solution cs, bs; 
+    protected String res; 
+    protected int[][] affinity, distance; //aff and dist has length n+1 x n+1, index 0 is not used
     protected String input; //input file
-    protected double density;
+    protected double density; //density of the non-zero elements, will be used for comparing the performance of the algorithms for different densities
 
 
     public MetaHeuristic() {
@@ -27,7 +27,7 @@ public class MetaHeuristic {
             affinity = new int[numberOfPeople + 1][numberOfPeople + 1];
             distance = new int[numberOfPeople + 1][numberOfPeople + 1];
 
-//			now reading the flow (affinity) values
+            //now reading the flow (affinity) values
             for (int i = 1; i < numberOfPeople + 1; i++) {
                 try {
                     for (int j = 1; j < numberOfPeople + 1; j++) {
@@ -44,7 +44,7 @@ public class MetaHeuristic {
             }
             density = density / Math.pow(numberOfPeople, 2);
 
-//			now reading the distance values
+            //now reading the distance values
             for (int i = 1; i < numberOfPeople + 1; i++) {
                 try {
                     for (int j = 1; j < numberOfPeople + 1; j++) {

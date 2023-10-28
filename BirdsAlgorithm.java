@@ -1,30 +1,35 @@
 import java.util.Arrays;
-
 import javax.swing.JOptionPane;
 
-
-public class BirdsAlgorithm extends MetaHeuristic {
+public class BirdsAlgorithm extends MetaHeuristic{
     private int numberOfBirds; //# of birds, n
     private int numberOfNeighbors; //# of neighbors, k
 
     private int overLapFactor; //overlap factor, x
     private int numberOfIterations; //# of iterations, K (in this implementation, creating a neighbour counts for an iteration)
-    private Population flock; //flock of birds (solutions) 0 is the leader and the following elements
-                              //	of the ArrayList(population) are listed as follows.  See that odd ones are on the left and even one
-//	are on the right
-//					0
-//				1		2
-//			3				4
-//		5						6
-    private int initialFlockSortedAccToPerf = 1;//1 means sorting the initial flock randomly,
-    //while 2 means sorting them according to their performance
-    private int numberOfFlapping;//# of flapping (kanat cirpma), m
-    private int leaderExchangeMode = 1;//1 means exchange the leader with the successor
-    //2 means exchanging the leader with the best
-    //3 means exchanging if its performance is gets worse
-    private int sortAccordingToPerformance = 1;//1 means the flock permutation stays the same
-    //2 means sorting them according performance
+    private Population flock; 
+/*
+    flock of birds (solutions) 0 is the leader and the following elements of the ArrayList(population) are listed as follows.  
+    See that odd ones are on the left and even ones are on the right
+					0
+				1		2
+			3				4
+		5						6
+*/        
 
+    private int initialFlockSortedAccToPerf = 1; //1 means sorting the initial flock randomly, while 2 means sorting them according to their performance
+    private int numberOfFlapping; //# of flapping, m
+    private int leaderExchangeMode = 1;
+    /*
+    1 means exchange the leader with the successor
+    2 means exchanging the leader with the best
+    3 means exchanging if its performance is gets worse
+    */
+    private int sortAccordingToPerformance = 1;
+    /*
+    1 means the flock permutation stays the same
+    2 means sorting them according performance
+    */
     private boolean leftSide = true;
     private boolean leaderImproves = true;
     private long startTime;
@@ -57,18 +62,18 @@ public class BirdsAlgorithm extends MetaHeuristic {
         createInitialFlock();
         Solution.resetNumberOfNeighborsCreated();
         numberOfIterations = (int) Math.pow(Solution.getNumberOfTypes(), 3);
-//		System.out.println(noi+" "+Solution.getNumberOfNeighborsCreated());
+        //System.out.println(noi+" "+Solution.getNumberOfNeighborsCreated());
         while (Solution.getNumberOfNeighborsCreated() < numberOfIterations) {
             for (int i = 0; i < numberOfFlapping; i++) {
-                flyFlock(); //TODO: Burada her seferinde farklı bir i değeri için exception atıyor
+                flyFlock();
             }
-//			System.out.println("Flock flied");
+            //System.out.println("Flock flied");
             replaceLeader();
-//			System.out.println("Leader replaced");
+            //System.out.println("Leader replaced");
             sortTheSuccessors();
-//			System.out.println("Successors sorted");
+            //System.out.println("Successors sorted");
             leaderImproves = true;
-//			System.out.println(Solution.getNumberOfNeighborsCreated());
+            //System.out.println(Solution.getNumberOfNeighborsCreated());
         }
         writeResults();
     }
@@ -77,7 +82,6 @@ public class BirdsAlgorithm extends MetaHeuristic {
      * This method creates nob solutions (birds), adds them to the flock and
      * sorts them according to their performance (fitness) if the initialFlockSortedAccToPerf paramater
      * is given as 2 (see kuslar-150110.doc).
-     *
      */
     public void createInitialFlock() {
         for (int i = 0; i < numberOfBirds; i++) {
@@ -93,9 +97,8 @@ public class BirdsAlgorithm extends MetaHeuristic {
     }
 
     public void flyFlock() {
-//kuş önce kendi komutu k�mesine bakacak, e�er iyile�mezse �ndeki ku�tan kom�u isticek.
-
-        Solution leader, currentSolutionTODO, bestOther;//best 1 used for repalcing the leader, best other used for transferring following birds
+        //The bird will first check its neighbours, if it does not improve, it will ask for a neighbour to another bird .
+        Solution leader, currentSolutionTODO, bestOther; //best 1 used for repalcing the leader, best other used for transferring following birds
         //create neighbors of each solution
         Solution bests[] = new Solution[numberOfBirds];
 

@@ -6,41 +6,32 @@ public class Population extends ArrayList<Solution> {
     /**
      * represents a group of solutions. We simply called Population inspired from GA
      */
-    private static final long serialVersionUID = -7107869948639093967L;
     private double totalFitness;
 
     public Population() {
     }
 
+    //add a bird(solution) to flock(population)
     public boolean add(Solution ind) {
         totalFitness += ind.getFitness();
         return super.add(ind);
     }
-
-    /**
-     * returns total fitness of all solutions in this population
-     *
-     * @return
-     */
-    public double getTotalFitness() {
-        return totalFitness;
-    }
-
+    //remove a bird(solution) from flock(population)
     public boolean remove(Solution ind) {
         totalFitness -= ind.getFitness();
         return super.remove(ind);
     }
-
+    //returns total fitness of all solutions in this population
+    public double getTotalFitness() {
+        return totalFitness;
+    }
+    //clears the population
     public void clear() {
         totalFitness = 0;
         super.clear();
     }
 
-    /**
-     * returns the solution with greatest fitness value
-     *
-     * @return
-     */
+    //returns the solution with greatest fitness value
     public Solution getMax() {
         Solution maxS = null, currentSolution;
         double max = 0;
@@ -55,11 +46,7 @@ public class Population extends ArrayList<Solution> {
         return maxS;
     }
 
-    /**
-     * returns the solution with smallest fitness value
-     *
-     * @return
-     */
+    //returns the solution with smallest fitness value
     public Solution getMin() {
         Solution minS = null, currentSolution;
         double min = Double.MAX_VALUE;
