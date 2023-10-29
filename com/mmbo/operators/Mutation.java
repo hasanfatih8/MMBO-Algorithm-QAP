@@ -1,3 +1,6 @@
+package com.mmbo.operators;
+import com.mmbo.Solution;
+
 public class Mutation {
 
     /*

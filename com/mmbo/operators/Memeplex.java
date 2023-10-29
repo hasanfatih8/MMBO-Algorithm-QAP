@@ -1,3 +1,4 @@
+package com.mmbo.operators;
 public class Memeplex {
     enum Crossover {
         PMX,

@@ -1,3 +1,5 @@
+package com.mmbo;
+
 import java.io.File;
 import java.util.Scanner;
 import javax.swing.JFileChooser;
