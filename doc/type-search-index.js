@@ -1,0 +1,1 @@
+typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"com.mmbo","l":"BirdsAlgorithm"},{"p":"com.mmbo","l":"Go"},{"p":"com.mmbo","l":"MetaHeuristic"},{"p":"com.mmbo","l":"Population"},{"p":"com.mmbo","l":"Solution"}];updateSearchResults();

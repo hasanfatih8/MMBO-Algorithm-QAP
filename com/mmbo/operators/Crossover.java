@@ -8,6 +8,9 @@ import com.mmbo.Solution;
  */
 public class Crossover {
 
+    //Empty constructor
+    private Crossover() {}
+
     /**
      * Apply the specified crossover type to two parent solutions and generate child solutions.
      *
