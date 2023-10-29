@@ -33,6 +33,16 @@ public class Solution implements Comparable, Cloneable {
         calculateCost();
     }
 
+     /**
+     * creates a solution with the given permutation array will be used for cloning and changing permutation
+     */
+    public Solution(Solution otherSolution, int fc[]) {
+        this.affinity = otherSolution.affinity;
+        this.distance = otherSolution.distance;
+        this.permutation = fc;
+        calculateCost();
+    }
+
     /**
      * returns the cost, fitness value of this solution
      */
