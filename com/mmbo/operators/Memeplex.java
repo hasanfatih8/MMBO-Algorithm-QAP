@@ -1,4 +1,5 @@
 package com.mmbo.operators;
+
 public class Memeplex {
     enum Crossover {
         PMX,
@@ -13,6 +14,7 @@ public class Memeplex {
     }
 
     enum LocalSearch {
-        
+        SwapFirstII,
+        SwapBestII
     }
 }

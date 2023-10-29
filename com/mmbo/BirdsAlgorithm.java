@@ -144,8 +144,7 @@ public class BirdsAlgorithm extends MetaHeuristic{
                 bests[i] = bestOther;
             } else if (flock.get(i - 2).checkBestNeighbour().getFitness() <= currentSolutionTODO.getFitness()) {
                 bests[i] = flock.get(i - 2).getBestNeighbour();
-            }  //TODO: SORUN BURADA ELSE OLMAMASI, İKİ DURUM DA GERÇEKLEŞMEDİĞİ TAKDİRDE BESTS[İ] NULL KALIYOR
-            else {
+            } else {
                 bests[i] = flock.get(i);
             }
         }
