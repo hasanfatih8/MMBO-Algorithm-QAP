@@ -6,7 +6,8 @@ public class Memeplex {
 
     enum Mutation {
         SwapRandom,
-        SwapBest
+        SwapBest,
+        ScrambleSwap
     }
 
     enum LocalSearch {
