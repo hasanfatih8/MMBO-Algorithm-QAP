@@ -1,33 +1,51 @@
 package com.mmbo.operators;
 import com.mmbo.Solution;
 
+/**
+ * The `Mutation` class provides methods for applying mutation operations to a `Solution` object.
+ */
 public class Mutation {
 
-    /*
-     * Intensity is a value between 0.0-1.0, it determines how many times the operator will be repeated ( generally 0.2, 0.4 and 0.6 )
+    /**
+     * Apply the specified mutation type with the given intensity to a solution.
+     *
+     * @param type      The type of mutation operation (SwapBest, SwapRandom, ScrambleSwap).
+     * @param intensity The intensity of the mutation operation (a value between 0.0 and 1.0).
+     * @param child     The child solution to be mutated.
+     * @return A mutated child solution.
      */
-
     static Solution applyMutation(Memeplex.Mutation type, double intensity, Solution child) {
         switch(type) {
             case SwapBest:
+                System.out.println("SwapBest case selected");
                 return swapRandom(intensity, child);
             case SwapRandom:
+                System.out.println("SwapRandom case selected");
                 return swapBest(intensity, child);
             case ScrambleSwap:
+                System.out.println("ScrambleSwap case selected");
                 return scrambleSwap(intensity, child);
             default:
+                System.out.println("No mutation applied");
                 return child;
         }
     }
 
-    // Repeats 5(intensity)  --> 5(0.2): 1 times
+    /**
+     * Apply the Swap Random Elements Mutation to a child solution.
+     *
+     * @param intensity The intensity of the mutation operation (a value between 0.0 and 1.0).
+     * @param child     The child solution to be mutated.
+     * @return A mutated child solution using the Swap Random Elements Mutation.
+     */
     private static Solution swapRandom(double intensity, Solution child) {
+        //Calculate number of repetitions (5α)
         int repetitions = (int)(intensity*5);
-        
         int[] permutation = child.getFeederConfiguration();
         int conf[] = new int[permutation.length]; 
         conf = permutation.clone();
 
+        //Perform the mutation
         for (int i = 0; i < repetitions; i++) {
             int ex1, ex2;
             ex1 = 1 + (int) (Math.random() * Solution.getNumberOfTypes());
@@ -39,26 +57,34 @@ public class Mutation {
             conf[ex1] = conf[ex2];
             conf[ex2] = temp;
         }
+        System.out.println("Original solution ========>" + permutation);
+        System.out.println("Mutated solution ========>" + conf);
         return new Solution(child, conf);
     }
 
-    // Repeats 1000(intensity^3)  --> 1000(0.2^3): 8 times
+    /**
+     * Apply the Swap Best Elements Mutation to a child solution.
+     *
+     * @param intensity The intensity of the mutation operation (a value between 0.0 and 1.0).
+     * @param child     The child solution to be mutated.
+     * @return A mutated child solution using the Swap Best Elements Mutation.
+     */
     private static Solution swapBest(double intensity, Solution child) {
+        //Calculate number of repetitions (1000α^3)
         int repetitions = (int)(Math.pow(intensity,3)*1000);
-        
         int[] permutation = child.getFeederConfiguration();
         int conf[] = new int[permutation.length];
         conf = permutation.clone();
 
         Solution mutatedSolution = child;
 
+        //Perform the mutation
         for (int i = 0; i < repetitions; i++) {
             int ex1, ex2;
             ex1 = 1 + (int) (Math.random() * Solution.getNumberOfTypes());
             do {
                 ex2 = 1 + (int) (Math.random() * Solution.getNumberOfTypes());
             } while (ex1 == ex2);
-            
 
             int temp = conf[ex1];
             conf[ex1] = conf[ex2];
@@ -66,6 +92,7 @@ public class Mutation {
  
             Solution newSolution = new Solution(mutatedSolution, conf); 
 
+            //If the new solution is better than the mutated solution and the child, return the new solution
             if (mutatedSolution.compareTo(newSolution) < 0 && child.compareTo(newSolution) < 0) {
                 return newSolution;
             } else {
@@ -73,23 +100,27 @@ public class Mutation {
             }
 
         }
+        System.out.println("Original solution ========>" + permutation);
+        System.out.println("New solution ========>" + conf);
         return mutatedSolution;
     }
 
-    /*
-     *      3 9 2 1 5 6 2
-     *        |     |
-     *      3 9 2 1 5 6 2
-     * 
-     * Repeats 5(intensity) * 10(intensity)  --> 5(0.2) * 10(0.2): 2 times
+    /**
+     * Apply the Scramble Swap Mutation to a child solution.
+     *
+     * @param intensity The intensity of the mutation operation (a value between 0.0 and 1.0).
+     * @param child     The child solution to be mutated.
+     * @return A mutated child solution using the Scramble Swap Mutation.
      */
     private static Solution scrambleSwap(double intensity, Solution child) {
+        //Calculate number of repetitions (5α)
         int repetitions = (int)(5*intensity);
         
         int[] permutation = child.getFeederConfiguration();
         int conf[] = new int[permutation.length];
         conf = permutation.clone();
 
+        //Perform the mutation
         for (int i = 0; i < repetitions; i++) {
             int ex1, ex2;
             do {
@@ -98,17 +129,16 @@ public class Mutation {
             } while (ex1 < ex2);
             
             for (int j = 0; j < 2*repetitions; j++) {
-
                 int node1 = ex1 + 1 + (int) (Math.random() * (ex2 - ex1));
                 int node2 = ex1 + 1 + (int) (Math.random() * (ex2 - ex1));
-                // may be added check equality, find another random pair if it is
-                
+                //TODO: may be added check equality, find another random pair if it is
                 int temp = conf[node1];
                 conf[node1] = conf[node2];
                 conf[node2] = temp;
             }
-
         }
+        System.out.println("Original solution ========>" + permutation);
+        System.out.println("Mutated solution ========>" + conf);
         return new Solution(child, conf);
     }
 
