@@ -2,7 +2,8 @@ package com.mmbo.operators;
 public class Memeplex {
     enum Crossover {
         PMX,
-        OX
+        OX,
+        CX
     }
 
     enum Mutation {

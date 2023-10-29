@@ -92,8 +92,8 @@ public class Mutation {
 
         for (int i = 0; i < repetitions; i++) {
             int ex1, ex2;
-            ex1 = 1 + (int) (Math.random() * Solution.getNumberOfTypes());
             do {
+                ex1 = 1 + (int) (Math.random() * Solution.getNumberOfTypes());
                 ex2 = 1 + (int) (Math.random() * Solution.getNumberOfTypes());
             } while (ex1 < ex2);
             
