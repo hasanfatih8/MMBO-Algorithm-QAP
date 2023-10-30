@@ -200,11 +200,6 @@ public class Crossover {
         };
         
     }
-
-
-
-
-
     
 }
 

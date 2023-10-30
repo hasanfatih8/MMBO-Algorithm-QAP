@@ -18,8 +18,10 @@ public class LocalSearch {
     static Solution applyLocalSearch(Memeplex.LocalSearch type, int depth, Solution child) {
         switch(type) {
             case SwapFirstII:
+                System.out.println("SwapFirstII case selected");
                 return swapFirstII(depth, child);
             case SwapBestII:
+                System.out.println("SwapBestII case selected");
                 return swapBestII(depth, child);
             default:
                 return child;
@@ -35,12 +37,14 @@ public class LocalSearch {
      * @return The improved solution after applying the Swap-First Local Search.
      */
     private static Solution swapFirstII(int depth, Solution child) {
-
+        System.out.println("Child solution: " + child.getFeederConfiguration() + "Fitness(cost): " + child.getFitness());
         Solution better = child;
 
         for(int i=0; i < depth; i++) {
-            Mutation.applyMutation(Memeplex.Mutation.SwapRandom, 0.2, better);   
+            Mutation.applyMutation(Memeplex.Mutation.SwapRandom, 0.2, better);
+            System.out.println("Mutated solution(better)" + better.getFeederConfiguration() + "Fitness(cost): " + better.getFitness());   
             if(better.getFitness() < child.getFitness()) {
+                System.out.println("Better solution found" + better.getFeederConfiguration() + "Fitness(cost): " + better.getFitness());
                 return better;
             }
         }
@@ -59,11 +63,15 @@ public class LocalSearch {
         Solution best = child;
 
         for(int i=0; i < depth; i++) {
+            System.out.println("Before Mutation - temp: " + temp);
             Mutation.applyMutation(Memeplex.Mutation.SwapRandom, 0.2, temp);
+            System.out.println("After Mutation - temp: " + temp);
             if(temp.getFitness() < best.getFitness()){
                 best = temp;
+                System.out.println("Found a better solution - best: " + best);
             }   
         }
+        System.out.println("Final best solution: " + best);
         return best;
     }
 
