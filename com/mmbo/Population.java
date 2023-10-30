@@ -4,36 +4,63 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 
+/**
+ * Represents a group of solutions, often referred to as a population, inspired by Genetic Algorithms (GA).
+ */
 public class Population extends ArrayList<Solution> {
-    /**
-     * represents a group of solutions. We simply called Population inspired from GA
-     */
+
     private double totalFitness;
 
+    /**
+     * Constructs an empty population.
+     */
     public Population() {
     }
 
-    //add a bird(solution) to flock(population)
+    /**
+     * Add a solution (bird) to the population (flock) and update the total fitness.
+     *
+     * @param ind The solution to add to the population.
+     * @return true if the solution is added successfully.
+     */
     public boolean add(Solution ind) {
         totalFitness += ind.getFitness();
         return super.add(ind);
     }
-    //remove a bird(solution) from flock(population)
+
+    /**
+     * Remove a solution (bird) from the population and update the total fitness.
+     *
+     * @param ind The solution to remove from the population.
+     * @return true if the solution is removed successfully.
+     */
     public boolean remove(Solution ind) {
         totalFitness -= ind.getFitness();
         return super.remove(ind);
     }
-    //returns total fitness of all solutions in this population
+
+    /**
+     * Get the total fitness of all solutions in the population.
+     *
+     * @return The total fitness of the population.
+     */
     public double getTotalFitness() {
         return totalFitness;
     }
-    //clears the population
+    
+    /**
+     * Clears the population, resetting the total fitness to zero.
+     */
     public void clear() {
         totalFitness = 0;
         super.clear();
     }
 
-    //returns the solution with greatest fitness value
+    /**
+     * Get the solution with the highest fitness value in the population.
+     *
+     * @return The solution with the highest fitness.
+     */
     public Solution getMax() {
         Solution maxS = null, currentSolution;
         double max = 0;
@@ -48,7 +75,11 @@ public class Population extends ArrayList<Solution> {
         return maxS;
     }
 
-    //returns the solution with smallest fitness value
+    /**
+     * Get the solution with the lowest fitness value in the population.
+     *
+     * @return The solution with the lowest fitness.
+     */
     public Solution getMin() {
         Solution minS = null, currentSolution;
         double min = Double.MAX_VALUE;
