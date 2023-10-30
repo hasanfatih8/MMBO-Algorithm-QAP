@@ -4,6 +4,7 @@ import java.util.HashSet;
 import com.mmbo.Solution;
 
 /**
+ * @author Emir Said Haliloglu
  * The `Crossover` class provides methods for performing crossover operations on `Solution` objects.
  */
 public class Crossover {
