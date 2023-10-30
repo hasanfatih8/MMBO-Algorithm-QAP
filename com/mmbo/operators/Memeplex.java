@@ -6,7 +6,7 @@ public class Memeplex {
     /**
      * Enum for different crossover types.
      */
-    enum Crossover {
+    public enum Crossover {
         PMX,
         OX,
         CX
@@ -14,7 +14,7 @@ public class Memeplex {
     /**
      * Enum for different mutation types.
      */
-    enum Mutation {
+    public enum Mutation {
         SwapRandom,
         SwapBest,
         ScrambleSwap
@@ -22,7 +22,7 @@ public class Memeplex {
     /**
      * Enum for different local search types.
      */
-    enum LocalSearch {
+    public enum LocalSearch {
         SwapFirstII,
         SwapBestII
     }

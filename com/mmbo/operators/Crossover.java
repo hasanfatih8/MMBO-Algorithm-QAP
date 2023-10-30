@@ -20,7 +20,7 @@ public class Crossover {
      * @param parent2  The second parent solution.
      * @return An array of child solutions resulting from the crossover operation.
      */
-    static Solution[] applyCrossover(Memeplex.Crossover type, Solution parent1, Solution parent2) {
+    public static Solution[] applyCrossover(Memeplex.Crossover type, Solution parent1, Solution parent2) {
         switch(type) {
             case OX:
                 System.out.println("OX case selected");

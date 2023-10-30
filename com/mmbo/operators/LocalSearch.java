@@ -15,7 +15,7 @@ public class LocalSearch {
      * @param child The initial solution to be improved.
      * @return The improved solution after applying the local search.
      */
-    static Solution applyLocalSearch(Memeplex.LocalSearch type, int depth, Solution child) {
+    public static Solution applyLocalSearch(Memeplex.LocalSearch type, int depth, Solution child) {
         switch(type) {
             case SwapFirstII:
                 System.out.println("SwapFirstII case selected");

@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 
+import com.mmbo.operators.Crossover;
+import com.mmbo.operators.LocalSearch;
+import com.mmbo.operators.Memeplex;
+import com.mmbo.operators.Mutation;
+
 public class Solution implements Comparable, Cloneable {
     /**
      * n denotes number of people and offices.
