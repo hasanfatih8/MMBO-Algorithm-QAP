@@ -1,7 +1,6 @@
 package com.mmbo;
 
 import java.io.File;
-import java.util.Scanner;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -14,8 +13,6 @@ public class Go {
 
     public static void main(String[] args) {
         String file = "";
-        String params;
-
         // Step 1: Choose a QAP input file
         JOptionPane.showMessageDialog(null, 
             "This program is written for demonstrating the performance of the MBO algorithm." +
@@ -56,7 +53,7 @@ public class Go {
                     int numberOfTours = Integer.parseInt(mField.getText());
                     int numberOfSharedWithNextSolution = Integer.parseInt(xField.getText());
 
-                    // Your BirdsAlgorithm instantiation here with the obtained parameters.
+                    //BirdsAlgorithm instantiation here with the obtained parameters.
                     BirdsAlgorithm ba = new BirdsAlgorithm(numberOfInitialSolutions, numberOfNeighborSolutions, numberOfTours, numberOfSharedWithNextSolution, 1, 1, 1, file);
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
