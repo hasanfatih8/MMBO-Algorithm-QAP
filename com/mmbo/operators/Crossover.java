@@ -1,6 +1,9 @@
 package com.mmbo.operators;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+
+import com.mmbo.Go;
 import com.mmbo.Solution;
 
 /**
@@ -23,16 +26,24 @@ public class Crossover {
     public static Solution[] applyCrossover(Memeplex.Crossover type, Solution parent1, Solution parent2) {
         switch(type) {
             case OX:
-                System.out.println("OX case selected");
+                if(Go.DEBUG_MODE){
+                    System.out.println("OX case selected");
+                } 
                 return orderCrossover(parent1, parent2);
             case PMX:
-                System.out.println("PMX case selected");
+                if(Go.DEBUG_MODE){
+                    System.out.println("PMX case selected");
+                }
                 return partiallyMatchedCrossover(parent1, parent2);
             case CX:
-                System.out.println("CX case selected");
+                if(Go.DEBUG_MODE){
+                    System.out.println("CX case selected");
+                }
                 return cycleCrossover(parent1, parent2);
             default:
-                System.out.println("No crossover applied");
+                if(Go.DEBUG_MODE){
+                    System.out.println("No crossover applied");
+                }
                 return new Solution[] {parent1, parent2};
         }
     }
@@ -55,7 +66,9 @@ public class Crossover {
             startPos = 1 + (int) (Math.random() * Solution.getNumberOfTypes());
             endPos = 1 + (int) (Math.random() * Solution.getNumberOfTypes());
         } while (startPos > endPos);
-        System.out.println("Start position(index): " + startPos + " End position(index): " + endPos);
+        if(Go.DEBUG_MODE){
+            System.out.println("Start position(index): " + startPos + " End position(index): " + endPos);
+        }
 
         //Define a set to keep track of facilities already in the child permutation
         HashSet<Integer> facilitiesInRange = new HashSet<Integer>();
@@ -69,7 +82,9 @@ public class Crossover {
             facilitiesInRange.add(permutationParent1[i]);
         }
         //Print the facilities in range
-        System.out.println("Facilities in range: " + facilitiesInRange);
+        if(Go.DEBUG_MODE){
+            System.out.println("Facilities in range: " + facilitiesInRange);
+        }
 
         int pointer = endPos + 1;
         int emptyCities = Solution.getNumberOfTypes() - facilitiesInRange.size();
@@ -88,7 +103,9 @@ public class Crossover {
                 i--;
             }
         }
-        System.out.println("Child permutation: " + java.util.Arrays.toString(permutationChild1));
+        if(Go.DEBUG_MODE){
+            System.out.println("Child permutation: " + Arrays.toString(permutationChild1));
+        }
         return new Solution[] {
             new Solution(parent1, permutationChild1)
         };
@@ -126,8 +143,10 @@ public class Crossover {
             partiallyMatchMap1to2.put(permutationChild1[i], permutationChild2[i]);
             partiallyMatchMap2to1.put(permutationChild2[i], permutationChild1[i]);
         }
-        System.out.println("Partially matched map 1 to 2: " + partiallyMatchMap1to2);
-        System.out.println("Partially matched map 2 to 1: " + partiallyMatchMap2to1);
+        if(Go.DEBUG_MODE){
+            System.out.println("Partially matched map 1 to 2: " + partiallyMatchMap1to2);
+            System.out.println("Partially matched map 2 to 1: " + partiallyMatchMap2to1);
+        }
 
         //Update the rest of the child permutations
         for (int i = 1; i < Solution.getNumberOfTypes() + 1; i++) {
@@ -141,8 +160,10 @@ public class Crossover {
                 permutationChild1[i] = partiallyMatchMap1to2.get(permutationChild1[i]);
             }
         }
-        System.out.println("Child 1 permutation: " + java.util.Arrays.toString(permutationChild1));
-        System.out.println("Child 2 permutation: " + java.util.Arrays.toString(permutationChild2));
+        if(Go.DEBUG_MODE){
+            System.out.println("Child 1 permutation: " + java.util.Arrays.toString(permutationChild1));
+            System.out.println("Child 2 permutation: " + java.util.Arrays.toString(permutationChild2));
+        }
 
         return new Solution[] {
             new Solution(parent1, permutationChild1), 
@@ -191,7 +212,9 @@ public class Crossover {
                 protoChild1[i] = permutationParent2[i];
             }
         }
-        System.out.println("Child permutation: " + java.util.Arrays.toString(protoChild1));
+        if(Go.DEBUG_MODE){
+            System.out.println("Child permutation: " + java.util.Arrays.toString(protoChild1));
+        }
         //TODO: may be added inversion of it as other child
 
         return new Solution[] {

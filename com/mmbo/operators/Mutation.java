@@ -1,6 +1,7 @@
 package com.mmbo.operators;
 import java.util.Arrays;
 
+import com.mmbo.Go;
 import com.mmbo.Solution;
 
 /**
@@ -19,16 +20,24 @@ public class Mutation {
     public static Solution applyMutation(Memeplex.Mutation type, double intensity, Solution child) {
         switch(type) {
             case SwapBest:
-                System.out.println("SwapRandom case selected");
+                if(Go.DEBUG_MODE){
+                    System.out.println("SwapRandom case selected");
+                }
                 return swapRandom(intensity, child);
             case SwapRandom:
-                System.out.println("SwapBest case selected");
+                if(Go.DEBUG_MODE){
+                    System.out.println("SwapBest case selected");
+                }
                 return swapBest(intensity, child);
             case ScrambleSwap:
-                System.out.println("ScrambleSwap case selected");
+                if(Go.DEBUG_MODE){
+                    System.out.println("ScrambleSwap case selected");
+                }
                 return scrambleSwap(intensity, child);
             default:
-                System.out.println("No mutation applied");
+                if(Go.DEBUG_MODE){
+                    System.out.println("No mutation applied");
+                }
                 return child;
         }
     }
@@ -59,8 +68,10 @@ public class Mutation {
             conf[ex1] = conf[ex2];
             conf[ex2] = temp;
         }
-        System.out.println("Original solution ========>" + Arrays.toString(permutation));
-        System.out.println("Mutated solution ========>" + Arrays.toString(conf));
+        if(Go.DEBUG_MODE){
+            System.out.println("Original solution ========>" + Arrays.toString(permutation));
+            System.out.println("Mutated solution ========>" + Arrays.toString(conf));
+        }
         return new Solution(child, conf);
     }
 
@@ -96,16 +107,20 @@ public class Mutation {
 
             //If the new solution is better than the mutated solution and the child, return the new solution
             if (mutatedSolution.compareTo(newSolution) < 0 && child.compareTo(newSolution) < 0) {
-                System.out.println("Original solution ========>" + Arrays.toString(permutation));
-                System.out.println("New solution ========>" + Arrays.toString(conf));
+                if(Go.DEBUG_MODE){
+                    System.out.println("Original solution ========>" + Arrays.toString(permutation));
+                    System.out.println("New solution ========>" + Arrays.toString(conf));
+                }
                 return newSolution;
             } else {
                 mutatedSolution = newSolution;
             }
 
         }
-        System.out.println("Original solution ========>" + Arrays.toString(permutation));
-        System.out.println("New solution ========>" + Arrays.toString(conf));
+        if(Go.DEBUG_MODE){
+            System.out.println("Original solution ========>" + Arrays.toString(permutation));
+            System.out.println("New solution ========>" + Arrays.toString(conf));
+        }
         return mutatedSolution;
     }
 
@@ -141,8 +156,10 @@ public class Mutation {
                 conf[node2] = temp;
             }
         }
-        System.out.println("Original solution ========>" + Arrays.toString(permutation));
-        System.out.println("Mutated solution ========>" + Arrays.toString(conf));
+        if(Go.DEBUG_MODE){
+            System.out.println("Original solution ========>" + Arrays.toString(permutation));
+            System.out.println("Mutated solution ========>" + Arrays.toString(conf));
+        }
         return new Solution(child, conf);
     }
 

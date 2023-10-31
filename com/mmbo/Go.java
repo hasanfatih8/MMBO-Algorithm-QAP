@@ -7,18 +7,19 @@ import javax.swing.JOptionPane;
 
 
 public class Go {
+    public static final boolean DEBUG_MODE = true;
     public static void main(String[] args) {
         String file = "", params;
         Scanner scanner;
         int numberOfInitialSolutions, numberOfNeighborSolutions, numberOfTours, numberOfSharedWithNextSolution;
 
         JOptionPane.showMessageDialog(null, 
-                "This program is written for demonstrating the performance of the MBO algorithm." +
-                "\nEven though MBO algorithm can be applied to any combinatorial optimization problem, " +
-                "\nthis demo is specifically designed for solving QAP instances." +
-                "\nTherefore the input format should be in the form of QAPLIB standards." +
-                "\nWe also provided some sample QAPLIB instances within the package." +
-                "\nNow please specify a QAP input file.", "Multimeme Migrating Bird Optimization for QAP", JOptionPane.INFORMATION_MESSAGE);
+            "This program is written for demonstrating the performance of the MBO algorithm." +
+            "\nEven though MBO algorithm can be applied to any combinatorial optimization problem, " +
+            "\nthis demo is specifically designed for solving QAP instances." +
+            "\nTherefore the input format should be in the form of QAPLIB standards." +
+            "\nWe also provided some sample QAPLIB instances within the package." +
+            "\nNow please specify a QAP input file.", "Multimeme Migrating Bird Optimization for QAP", JOptionPane.INFORMATION_MESSAGE);
         JFileChooser chooser = new JFileChooser(new File("."));
         int returnVal = chooser.showOpenDialog(null);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
