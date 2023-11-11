@@ -2,6 +2,7 @@ package com.mmbo;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 
 /**
@@ -54,6 +55,17 @@ public class Population extends ArrayList<Solution> {
     public void clear() {
         totalFitness = 0;
         super.clear();
+    }
+
+    /**
+     * Choses a random solution from the population as mate.
+     */
+    public Solution chooseRandomMate(int currentIndex) {
+        int mateIndex;
+        do {
+            mateIndex = (int)(Math.random()*size());
+        } while(mateIndex == currentIndex);
+        return get(mateIndex);
     }
 
     /**

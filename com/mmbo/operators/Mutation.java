@@ -148,9 +148,8 @@ public class Mutation {
             } while (ex1 < ex2);
             
             for (int j = 0; j < 2*repetitions; j++) {
-                int node1 = ex1 + 1 + (int) (Math.random() * (ex2 - ex1));
-                int node2 = ex1 + 1 + (int) (Math.random() * (ex2 - ex1));
-                //TODO: may be added check equality, find another random pair if it is
+                int node1 = ex1 + (int) (Math.random() * (ex2 - ex1));
+                int node2 = ex1 + (int) (Math.random() * (ex2 - ex1));
                 int temp = conf[node1];
                 conf[node1] = conf[node2];
                 conf[node2] = temp;

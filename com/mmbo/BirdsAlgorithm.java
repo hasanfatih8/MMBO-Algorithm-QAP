@@ -114,10 +114,10 @@ public class BirdsAlgorithm extends MetaHeuristic{
 
         // Initialization phase
         leader = flock.get(0);
-        leader.createNeighborSet(numberOfNeighbors);
+        leader.createNeighborSet(numberOfNeighbors, flock.chooseRandomMate(0));
 
         for (int i = 1; i < numberOfBirds; i++) {
-            flock.get(i).createNeighborSet(numberOfNeighbors - overLapFactor);
+            flock.get(i).createNeighborSet(numberOfNeighbors - overLapFactor, flock.chooseRandomMate(i));
         }
         
         // Determine the best neighbors for the leader and the second bird
@@ -176,11 +176,10 @@ public class BirdsAlgorithm extends MetaHeuristic{
 	
 
         //Solution leader,cs,besto;//best 1 used for repalcing the leader, best other used for transferring following birds
-
         leader = flock.get(0);
-        leader.createNeighborSet(numberOfNeighbors);
+        leader.createNeighborSet(numberOfNeighbors, flock.chooseRandomMate(0));
         for (int i = 1; i < numberOfBirds; i++) {
-            flock.get(i).createNeighborSet(numberOfNeighbors - overLapFactor);
+            flock.get(i).createNeighborSet(numberOfNeighbors - overLapFactor, flock.chooseRandomMate(i));
         }
 
         leader = flock.get(0);

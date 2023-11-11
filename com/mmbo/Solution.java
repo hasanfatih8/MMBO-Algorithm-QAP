@@ -19,34 +19,27 @@ public class Solution implements Comparable, Cloneable {
     private static int numberOfTypes;
     private ArrayList<Solution> neighbourSet;
     private static int numberOfNeighborsCreated = 0; //counter designed for counting # of neighbors created. Criterion used for stopping BirdsAlgorithm.
-
+    private Memeplex memeplex;
+    
     /**
      * creates a solution with the given affinity and distance matrices
      */
     public Solution(int[][] affinity, int[][] distance) {
         this.affinity = affinity;
         this.distance = distance;
+        this.memeplex = new Memeplex();
         createRandomConf();
-        calculateCost();
-    }
-
-    /**
-     * creates a solution with the given affinity and distance matrices will be used for creating a neighbor and cloning
-     */
-    public Solution(int[][] affinity, int[][] distance, int fc[]) {
-        this.affinity = affinity;
-        this.distance = distance;
-        this.permutation = fc;
         calculateCost();
     }
 
      /**
      * creates a solution with the given permutation array will be used for cloning and changing permutation
      */
-    public Solution(Solution otherSolution, int fc[]) {
+    public Solution(Solution otherSolution, int permutation[]) {
         this.affinity = otherSolution.affinity;
         this.distance = otherSolution.distance;
-        this.permutation = fc;
+        this.permutation = permutation;
+        this.memeplex = otherSolution.memeplex;
         calculateCost();
     }
 
@@ -104,34 +97,26 @@ public class Solution implements Comparable, Cloneable {
     }
 
     /**
-     * creates a new Solution object as a neighbor of this solution.
-     * This new Solution object is created by simply swapping contents of randomly chosen two slots.
-     */
-    public Solution randomSwapMutation() {
-        int conf[] = new int[permutation.length];
-        int ex1, ex2;
-        ex1 = 1 + (int) (Math.random() * numberOfTypes);
-        do {
-            ex2 = 1 + (int) (Math.random() * numberOfTypes);
-        } while (ex1 == ex2);
-        for (int i = 0; i < conf.length; i++) {
-            conf[i] = permutation[i];
-        }
-        conf[ex1] = permutation[ex2];
-        conf[ex2] = permutation[ex1];
-        return new Solution(affinity, distance, conf);
-    }
-
-    //TODO: Write other mutation, local search and crossover methods
-    
-
-    /**
      * cretaes a neighbor Set of this solution which includes non elements
      */
-    public void createNeighborSet(int nongbr) {
+    public void createNeighborSet(int nongbr, Solution mate) {
         neighbourSet = new ArrayList<Solution>();
+        Solution parameter1Solution, parameter2Solution;
+
+        if(this.getCost() < mate.getCost()){
+            parameter1Solution = this;
+            parameter2Solution = mate;
+        } else {
+            parameter1Solution = mate;
+            parameter2Solution = this;
+        }
         for (int i = 0; i < nongbr; i++) {
-            neighbourSet.add(randomSwapMutation());
+            //neighbourSet.add(randomSwapMutation());
+            Solution child = Crossover.applyCrossover(memeplex.getCrossover(), parameter1Solution, parameter2Solution);
+            child = Mutation.applyMutation(memeplex.getMutation(), memeplex.getMutationIntensity(), child);
+            child = LocalSearch.applyLocalSearch(memeplex.getLocalSearch(), memeplex.getDepthOfLocalSearch(), child);
+            if(Math.random() < 0.20) child.memeplex = new Memeplex();
+            neighbourSet.add(child);
             numberOfNeighborsCreated++;
         }
         sortNeighbours();
@@ -187,7 +172,7 @@ public class Solution implements Comparable, Cloneable {
         for (int i = 0; i < conf.length; i++) {
             conf[i] = permutation[i];
         }
-        return new Solution(affinity, distance, conf);
+        return new Solution(this, conf);
     }
 
     /**

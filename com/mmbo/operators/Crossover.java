@@ -23,7 +23,7 @@ public class Crossover {
      * @param parent2  The second parent solution.
      * @return An array of child solutions resulting from the crossover operation.
      */
-    public static Solution[] applyCrossover(Memeplex.Crossover type, Solution parent1, Solution parent2) {
+    public static Solution applyCrossover(Memeplex.Crossover type, Solution parent1, Solution parent2) {
         switch(type) {
             case OX:
                 if(Go.DEBUG_MODE){
@@ -44,7 +44,7 @@ public class Crossover {
                 if(Go.DEBUG_MODE){
                     System.out.println("No crossover applied");
                 }
-                return new Solution[] {parent1, parent2};
+                return parent1;
         }
     }
 
@@ -55,7 +55,7 @@ public class Crossover {
      * @param parent2 The second parent solution.
      * @return An array containing a single child solution generated using the OX crossover.
      */
-    private static Solution[] orderCrossover(Solution parent1, Solution parent2) {
+    private static Solution orderCrossover(Solution parent1, Solution parent2) {
         int startPos, endPos;
         //Extract parent permutations
         int[] permutationParent1 = parent1.getFeederConfiguration();
@@ -65,7 +65,7 @@ public class Crossover {
         do {
             startPos = 1 + (int) (Math.random() * Solution.getNumberOfTypes());
             endPos = 1 + (int) (Math.random() * Solution.getNumberOfTypes());
-        } while (startPos > endPos);
+        } while (startPos >= endPos);
         if(Go.DEBUG_MODE){
             System.out.println("Start position(index): " + startPos + " End position(index): " + endPos);
         }
@@ -93,7 +93,10 @@ public class Crossover {
         for (int i = 0; i < emptyCities; i++) {
             if(pointer < Solution.getNumberOfTypes()){
                 int pointerParent2 = pointer;
-                while(facilitiesInRange.contains(permutationParent2[pointer])) {
+                while(facilitiesInRange.contains(permutationParent2[pointerParent2])) {
+                    if(pointerParent2 == 32){
+                        pointerParent2 = 0;
+                    }
                     pointerParent2++;
                 }
                 permutationChild1[pointer] = permutationParent2[pointerParent2]; 
@@ -106,9 +109,7 @@ public class Crossover {
         if(Go.DEBUG_MODE){
             System.out.println("Child permutation: " + Arrays.toString(permutationChild1));
         }
-        return new Solution[] {
-            new Solution(parent1, permutationChild1)
-        };
+        return new Solution(parent1, permutationChild1);
     }
 
     /**
@@ -118,7 +119,7 @@ public class Crossover {
      * @param parent2 The second parent solution.
      * @return An array containing two child solutions generated using the PMX crossover.
      */
-    private static Solution[] partiallyMatchedCrossover(Solution parent1, Solution parent2) {
+    private static Solution partiallyMatchedCrossover(Solution parent1, Solution parent2) {
         int startPos, endPos;
         //Extract parent permutations
         int[] permutationParent1 = parent1.getFeederConfiguration();
@@ -165,10 +166,7 @@ public class Crossover {
             System.out.println("Child 2 permutation: " + java.util.Arrays.toString(permutationChild2));
         }
 
-        return new Solution[] {
-            new Solution(parent1, permutationChild1), 
-            new Solution(parent2, permutationChild2)
-        };
+        return new Solution(parent1, permutationChild1);
     }
 
     /**
@@ -178,7 +176,7 @@ public class Crossover {
      * @param parent2 The second parent solution.
      * @return An array containing a single child solution generated using the CX crossover.
      */
-    private static Solution[] cycleCrossover(Solution parent1, Solution parent2) {
+    private static Solution cycleCrossover(Solution parent1, Solution parent2) {
         //Extract parent permutations
         int[] permutationParent1 = parent1.getFeederConfiguration();
         int[] permutationParent2 = parent2.getFeederConfiguration();
@@ -199,7 +197,7 @@ public class Crossover {
                 cycle.add(lastIndex);
                 lastIndex = mappedPermutations.get(lastIndex);
             } else {
-                throw new NullPointerException("Cycle Crossover: Creating cycle error!!");
+                return parent1;
             }
         }
 
@@ -215,13 +213,8 @@ public class Crossover {
         if(Go.DEBUG_MODE){
             System.out.println("Child permutation: " + java.util.Arrays.toString(protoChild1));
         }
-        //TODO: may be added inversion of it as other child
 
-        return new Solution[] {
-            new Solution(parent1, protoChild1)
-            //new Solution(parent2, null)
-        };
-        
+        return new Solution(parent1, protoChild1);
     }
     
 }
