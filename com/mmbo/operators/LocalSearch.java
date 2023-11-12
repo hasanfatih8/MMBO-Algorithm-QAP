@@ -57,7 +57,7 @@ public class LocalSearch {
             }
             if(better.getFitness() < child.getFitness()) {
                 if(Go.DEBUG_MODE){
-                    System.out.println("Better solution found" + better.getFeederConfiguration() + "Fitness(cost): " + better.getFitness());
+                    System.out.println("Better solution found" + better.getFeederConfiguration() + "Fitness(cost): " + better.getFitness() + "\n");
                 }
                 return better;
             }
@@ -92,7 +92,7 @@ public class LocalSearch {
             }   
         }
         if(Go.DEBUG_MODE){
-            System.out.println("Final best solution: " + best);
+            System.out.println("Final best solution: " + best + "\n");
         }
         return best;
     }

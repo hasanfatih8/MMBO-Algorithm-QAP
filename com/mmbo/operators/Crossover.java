@@ -107,7 +107,7 @@ public class Crossover {
             }
         }
         if(Go.DEBUG_MODE){
-            System.out.println("Child permutation: " + Arrays.toString(permutationChild1));
+            System.out.println("Child permutation: " + Arrays.toString(permutationChild1) + "\n");
         }
         return new Solution(parent1, permutationChild1);
     }
@@ -162,8 +162,8 @@ public class Crossover {
             }
         }
         if(Go.DEBUG_MODE){
-            System.out.println("Child 1 permutation: " + java.util.Arrays.toString(permutationChild1));
-            System.out.println("Child 2 permutation: " + java.util.Arrays.toString(permutationChild2));
+            System.out.println("Child 1 permutation: " + java.util.Arrays.toString(permutationChild1) + "\n");
+            //System.out.println("Child 2 permutation: " + java.util.Arrays.toString(permutationChild2));
         }
 
         return new Solution(parent1, permutationChild1);
@@ -211,7 +211,7 @@ public class Crossover {
             }
         }
         if(Go.DEBUG_MODE){
-            System.out.println("Child permutation: " + java.util.Arrays.toString(protoChild1));
+            System.out.println("Child permutation: " + java.util.Arrays.toString(protoChild1) + "\n");
         }
 
         return new Solution(parent1, protoChild1);

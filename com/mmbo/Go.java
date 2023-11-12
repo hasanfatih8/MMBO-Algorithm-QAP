@@ -1,6 +1,9 @@
 package com.mmbo;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.PrintStream;
+
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -13,6 +16,7 @@ public class Go {
 
     public static void main(String[] args) {
         String file = "";
+        String filePath = "logOutput.txt";
         // Step 1: Choose a QAP input file
         JOptionPane.showMessageDialog(null, 
             "This program is written for demonstrating the performance of the MBO algorithm." +
@@ -30,16 +34,16 @@ public class Go {
 
             // Step 2: Input parameters
             JPanel paramPanel = new JPanel(new GridLayout(0, 1));
-            paramPanel.add(new JLabel("n - number of initial solutions:"));
+            paramPanel.add(new JLabel("n - number of initial solutions(51):"));
             JTextField nField = new JTextField(5);
             paramPanel.add(nField);
-            paramPanel.add(new JLabel("\nk - number of neighbor solutions to be considered:"));
+            paramPanel.add(new JLabel("\nk - number of neighbor solutions to be considered(3):"));
             JTextField kField = new JTextField(5);
             paramPanel.add(kField);
-            paramPanel.add(new JLabel("\nm - number of tours:"));
+            paramPanel.add(new JLabel("\nm - number of tours(10):"));
             JTextField mField = new JTextField(5);
             paramPanel.add(mField);
-            paramPanel.add(new JLabel("\nx - number of neighbor solutions to be shared with the next solution:"));
+            paramPanel.add(new JLabel("\nx - number of neighbor solutions to be shared with the next solution(1):"));
             JTextField xField = new JTextField(5);
             paramPanel.add(xField);
 
@@ -52,10 +56,24 @@ public class Go {
                     int numberOfNeighborSolutions = Integer.parseInt(kField.getText());
                     int numberOfTours = Integer.parseInt(mField.getText());
                     int numberOfSharedWithNextSolution = Integer.parseInt(xField.getText());
+                    
+                    // Create a FileOutputStream to write to the file
+                    FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+                    // Create a PrintStream that writes to the FileOutputStream
+                    PrintStream printStream = new PrintStream(fileOutputStream);
+                    // Save the current System.out
+                    PrintStream originalSystemOut = System.out;
+                    // Set System.out to the new PrintStream
+                    System.setOut(printStream);
+                    
 
                     //BirdsAlgorithm instantiation here with the obtained parameters.
                     BirdsAlgorithm ba = new BirdsAlgorithm(numberOfInitialSolutions, numberOfNeighborSolutions, numberOfTours, numberOfSharedWithNextSolution, 1, 1, 1, file);
-                } catch (NumberFormatException e) {
+                    // Restore the original System.out
+                    System.setOut(originalSystemOut);
+                    // Close the fileOutputStream
+                    fileOutputStream.close();
+                } catch (Exception e) {
                     e.printStackTrace();
                     JOptionPane.showMessageDialog(null, "Wrong parameter format", "Error", JOptionPane.ERROR_MESSAGE);
                 }

@@ -70,7 +70,7 @@ public class Mutation {
         }
         if(Go.DEBUG_MODE){
             System.out.println("Original solution ========>" + Arrays.toString(permutation));
-            System.out.println("Mutated solution ========>" + Arrays.toString(conf));
+            System.out.println("Mutated solution ========>" + Arrays.toString(conf) + "\n");
         }
         return new Solution(child, conf);
     }
@@ -119,7 +119,7 @@ public class Mutation {
         }
         if(Go.DEBUG_MODE){
             System.out.println("Original solution ========>" + Arrays.toString(permutation));
-            System.out.println("New solution ========>" + Arrays.toString(conf));
+            System.out.println("New solution ========>" + Arrays.toString(conf) + "\n");
         }
         return mutatedSolution;
     }
@@ -157,7 +157,7 @@ public class Mutation {
         }
         if(Go.DEBUG_MODE){
             System.out.println("Original solution ========>" + Arrays.toString(permutation));
-            System.out.println("Mutated solution ========>" + Arrays.toString(conf));
+            System.out.println("Mutated solution ========>" + Arrays.toString(conf) + "\n");
         }
         return new Solution(child, conf);
     }
