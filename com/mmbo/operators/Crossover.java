@@ -1,4 +1,5 @@
 package com.mmbo.operators;
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -8,40 +9,43 @@ import com.mmbo.Solution;
 
 /**
  * @author Emir Said Haliloglu
- * The `Crossover` class provides methods for performing crossover operations on `Solution` objects.
+ *         The `Crossover` class provides methods for performing crossover
+ *         operations on `Solution` objects.
  */
 public class Crossover {
 
-    //Empty constructor
-    private Crossover() {}
+    // Empty constructor
+    private Crossover() {
+    }
 
     /**
-     * Apply the specified crossover type to two parent solutions and generate child solutions.
+     * Apply the specified crossover type to two parent solutions and generate child
+     * solutions.
      *
-     * @param type     The type of crossover operation (OX, PMX, or CX).
-     * @param parent1  The first parent solution.
-     * @param parent2  The second parent solution.
+     * @param type    The type of crossover operation (OX, PMX, or CX).
+     * @param parent1 The first parent solution.
+     * @param parent2 The second parent solution.
      * @return An array of child solutions resulting from the crossover operation.
      */
     public static Solution applyCrossover(Memeplex.Crossover type, Solution parent1, Solution parent2) {
-        switch(type) {
+        switch (type) {
             case OX:
-                if(Go.DEBUG_MODE){
+                if (Go.DEBUG_MODE) {
                     System.out.println("OX case selected");
-                } 
+                }
                 return orderCrossover(parent1, parent2);
             case PMX:
-                if(Go.DEBUG_MODE){
+                if (Go.DEBUG_MODE) {
                     System.out.println("PMX case selected");
                 }
                 return partiallyMatchedCrossover(parent1, parent2);
             case CX:
-                if(Go.DEBUG_MODE){
+                if (Go.DEBUG_MODE) {
                     System.out.println("CX case selected");
                 }
                 return cycleCrossover(parent1, parent2);
             default:
-                if(Go.DEBUG_MODE){
+                if (Go.DEBUG_MODE) {
                     System.out.println("No crossover applied");
                 }
                 return parent1;
@@ -53,60 +57,64 @@ public class Crossover {
      *
      * @param parent1 The first parent solution.
      * @param parent2 The second parent solution.
-     * @return An array containing a single child solution generated using the OX crossover.
+     * @return An array containing a single child solution generated using the OX
+     *         crossover.
      */
     private static Solution orderCrossover(Solution parent1, Solution parent2) {
         int startPos, endPos;
-        //Extract parent permutations
+        // Extract parent permutations
         int[] permutationParent1 = parent1.getFeederConfiguration();
         int[] permutationParent2 = parent2.getFeederConfiguration();
-        
-        //Select random start and end positions for crossover, ensuring start < end
+
+        // Select random start and end positions for crossover, ensuring start < end
         do {
             startPos = 1 + (int) (Math.random() * Solution.getNumberOfTypes());
             endPos = 1 + (int) (Math.random() * Solution.getNumberOfTypes());
         } while (startPos >= endPos);
-        if(Go.DEBUG_MODE){
+        if (Go.DEBUG_MODE) {
             System.out.println("Start position(index): " + startPos + " End position(index): " + endPos);
         }
 
-        //Define a set to keep track of facilities already in the child permutation
+        // Define a set to keep track of facilities already in the child permutation
         HashSet<Integer> facilitiesInRange = new HashSet<Integer>();
 
-        //Create child permutation array
+        // Create child permutation array
         int[] permutationChild1 = new int[Solution.getNumberOfTypes() + 1];
 
-        //Copy the selected range from parent 1 to child, update the set
+        // Copy the selected range from parent 1 to child, update the set
         for (int i = startPos; i < endPos + 1; i++) {
             permutationChild1[i] = permutationParent1[i];
             facilitiesInRange.add(permutationParent1[i]);
         }
-        //Print the facilities in range
-        if(Go.DEBUG_MODE){
+        // Print the facilities in range
+        if (Go.DEBUG_MODE) {
             System.out.println("Facilities in range: " + facilitiesInRange);
         }
 
         int pointer = endPos + 1;
         int emptyCities = Solution.getNumberOfTypes() - facilitiesInRange.size();
-        
-        //Copy the remaining facilities from parent 2 to child
+        int pointerParent2 = pointer;
+        // Copy the remaining facilities from parent 2 to child
         for (int i = 0; i < emptyCities; i++) {
-            if(pointer < Solution.getNumberOfTypes()){
-                int pointerParent2 = pointer;
-                while(facilitiesInRange.contains(permutationParent2[pointerParent2])) {
-                    if(pointerParent2 == 32){
+            if (pointer < Solution.getNumberOfTypes() + 1) {
+                if (pointerParent2 == Solution.getNumberOfTypes() + 1) {
+                    pointerParent2 = 1;
+                }
+                while (facilitiesInRange.contains(permutationParent2[pointerParent2])) {
+                    if (pointerParent2 == Solution.getNumberOfTypes()) {
                         pointerParent2 = 0;
                     }
                     pointerParent2++;
                 }
-                permutationChild1[pointer] = permutationParent2[pointerParent2]; 
-                pointer++;  
+                permutationChild1[pointer] = permutationParent2[pointerParent2];
+                pointerParent2++;
+                pointer++;
             } else {
                 pointer = 1;
                 i--;
             }
         }
-        if(Go.DEBUG_MODE){
+        if (Go.DEBUG_MODE) {
             System.out.println("Child permutation: " + Arrays.toString(permutationChild1) + "\n");
         }
         return new Solution(parent1, permutationChild1);
@@ -117,53 +125,50 @@ public class Crossover {
      *
      * @param parent1 The first parent solution.
      * @param parent2 The second parent solution.
-     * @return An array containing two child solutions generated using the PMX crossover.
+     * @return An array containing two child solutions generated using the PMX
+     *         crossover.
      */
     private static Solution partiallyMatchedCrossover(Solution parent1, Solution parent2) {
         int startPos, endPos;
-        //Extract parent permutations
+        // Extract parent permutations
         int[] permutationParent1 = parent1.getFeederConfiguration();
         int[] permutationParent2 = parent2.getFeederConfiguration();
-        
-        //Select random start and end positions for crossover, ensuring start < end
+
+        // Select random start and end positions for crossover, ensuring start < end
         do {
             startPos = 1 + (int) (Math.random() * Solution.getNumberOfTypes());
             endPos = 1 + (int) (Math.random() * Solution.getNumberOfTypes());
-        } while (startPos > endPos);
+        } while (startPos >= endPos);
 
-        //Create child permutation arrays
+        // Create child permutation arrays
         int[] permutationChild1 = permutationParent1.clone();
-        int[] permutationChild2 = permutationParent2.clone();
 
-        //Create maps to keep track of partially matched genes
-        HashMap<Integer,Integer> partiallyMatchMap1to2 = new HashMap<Integer,Integer>();
-        HashMap<Integer,Integer> partiallyMatchMap2to1 = new HashMap<Integer,Integer>();
+        // Create maps to keep track of partially matched genes
+        HashMap<Integer, Integer> partiallyMap1to2 = new HashMap<Integer, Integer>();
+
         for (int i = startPos; i < endPos + 1; i++) {
             permutationChild1[i] = permutationParent2[i];
-            permutationChild2[i] = permutationParent1[i];
-            partiallyMatchMap1to2.put(permutationChild1[i], permutationChild2[i]);
-            partiallyMatchMap2to1.put(permutationChild2[i], permutationChild1[i]);
+            partiallyMap1to2.put(permutationParent2[i], permutationParent1[i]);
         }
-        if(Go.DEBUG_MODE){
-            System.out.println("Partially matched map 1 to 2: " + partiallyMatchMap1to2);
-            System.out.println("Partially matched map 2 to 1: " + partiallyMatchMap2to1);
+        if (Go.DEBUG_MODE) {
+            System.out.println("Partially matched map 1 to 2: " + partiallyMap1to2);
         }
 
-        //Update the rest of the child permutations
+        // Update the rest of the child permutations
         for (int i = 1; i < Solution.getNumberOfTypes() + 1; i++) {
-            if(i >= startPos && i <= endPos) continue;
-            //For child 1
-            if(partiallyMatchMap1to2.containsKey(permutationChild1[i])) {
-                permutationChild1[i] = partiallyMatchMap1to2.get(permutationChild1[i]);
+            if (i >= startPos && i <= endPos)
+                continue;
+            int temp = permutationChild1[i];
+            // For child 1
+            while (partiallyMap1to2.containsKey(temp)) {
+                temp = partiallyMap1to2.get(temp);
             }
-            //For child 2
-            if(partiallyMatchMap1to2.containsKey(permutationChild1[i])) {
-                permutationChild1[i] = partiallyMatchMap1to2.get(permutationChild1[i]);
-            }
+            permutationChild1[i] = temp;
         }
-        if(Go.DEBUG_MODE){
+        if (Go.DEBUG_MODE) {
             System.out.println("Child 1 permutation: " + java.util.Arrays.toString(permutationChild1) + "\n");
-            //System.out.println("Child 2 permutation: " + java.util.Arrays.toString(permutationChild2));
+            // System.out.println("Child 2 permutation: " +
+            // java.util.Arrays.toString(permutationChild2));
         }
 
         return new Solution(parent1, permutationChild1);
@@ -174,26 +179,27 @@ public class Crossover {
      *
      * @param parent1 The first parent solution.
      * @param parent2 The second parent solution.
-     * @return An array containing a single child solution generated using the CX crossover.
+     * @return An array containing a single child solution generated using the CX
+     *         crossover.
      */
     private static Solution cycleCrossover(Solution parent1, Solution parent2) {
-        //Extract parent permutations
+        // Extract parent permutations
         int[] permutationParent1 = parent1.getFeederConfiguration();
         int[] permutationParent2 = parent2.getFeederConfiguration();
-        
-        //Create a set to keep track of the cycle
+
+        // Create a set to keep track of the cycle
         HashSet<Integer> cycle = new HashSet<>();
 
-        //Create a map to keep track of the permutations
-        HashMap<Integer,Integer> mappedPermutations = new HashMap<>();
+        // Create a map to keep track of the permutations
+        HashMap<Integer, Integer> mappedPermutations = new HashMap<>();
         for (int i = 1; i < Solution.getNumberOfTypes() + 1; i++) {
             mappedPermutations.put(permutationParent1[i], permutationParent2[i]);
         }
-        
-        //Create the cycle
+
+        // Create the cycle
         int lastIndex = permutationParent1[1];
-        while(!cycle.contains(lastIndex)) {
-            if(mappedPermutations.containsKey(lastIndex)) {
+        while (!cycle.contains(lastIndex)) {
+            if (mappedPermutations.containsKey(lastIndex)) {
                 cycle.add(lastIndex);
                 lastIndex = mappedPermutations.get(lastIndex);
             } else {
@@ -201,28 +207,21 @@ public class Crossover {
             }
         }
 
-        //Create child permutation array, copy the cycle from parent 1 and fill the rest from parent 2
-        int[] protoChild1 = new int[Solution.getNumberOfTypes() + 1]; 
+        // Create child permutation array, copy the cycle from parent 1 and fill the
+        // rest from parent 2
+        int[] protoChild1 = new int[Solution.getNumberOfTypes() + 1];
         for (int i = 1; i < Solution.getNumberOfTypes() + 1; i++) {
-            if(cycle.contains(permutationParent1[i])) {
+            if (cycle.contains(permutationParent1[i])) {
                 protoChild1[i] = permutationParent1[i];
             } else {
                 protoChild1[i] = permutationParent2[i];
             }
         }
-        if(Go.DEBUG_MODE){
+        if (Go.DEBUG_MODE) {
             System.out.println("Child permutation: " + java.util.Arrays.toString(protoChild1) + "\n");
         }
 
         return new Solution(parent1, protoChild1);
     }
-    
+
 }
-
-
-
-
-
-
-
-

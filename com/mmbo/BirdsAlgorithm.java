@@ -1,48 +1,52 @@
 package com.mmbo;
+
 import java.util.Arrays;
 import javax.swing.JOptionPane;
 
-public class BirdsAlgorithm extends MetaHeuristic{
-    private int numberOfBirds; //# of birds, n
-    private int numberOfNeighbors; //# of neighbors, k
-    private int overLapFactor; //overlap factor, x
-    private int numberOfIterations; //# of iterations, K (in this implementation, creating a neighbour counts for an iteration)
-    
-    private Population flock; 
-/*
-    flock of birds (solutions) 0 is the leader and the following elements of the ArrayList(population) are listed as follows.  
-    See that odd ones are on the left and even ones are on the right
-					0
-				1		2
-			3				4
-		5						6
-*/        
+public class BirdsAlgorithm extends MetaHeuristic {
+    private int numberOfBirds; // # of birds, n
+    private int numberOfNeighbors; // # of neighbors, k
+    private int overLapFactor; // overlap factor, x
+    private int numberOfIterations; // # of iterations, K (in this implementation, creating a neighbour counts for
+                                    // an iteration)
 
-    //1 means sorting the initial flock randomly, while 2 means sorting them according to their performance
-    private int initialFlockSortedAccToPerf = 1; 
-    
+    private Population flock;
     /*
-    1 means exchange the leader with the successor
-    2 means exchanging the leader with the best
-    3 means exchanging if its performance is gets worse
-    */
-    private int leaderExchangeMode = 1; 
+     * flock of birds (solutions) 0 is the leader and the following elements of the
+     * ArrayList(population) are listed as follows.
+     * See that odd ones are on the left and even ones are on the right
+     * 0
+     * 1 2
+     * 3 4
+     * 5 6
+     */
+
+    // 1 means sorting the initial flock randomly, while 2 means sorting them
+    // according to their performance
+    private int initialFlockSortedAccToPerf = 1;
 
     /*
-    1 means the flock permutation stays the same
-    2 means sorting them according performance
-    */
+     * 1 means exchange the leader with the successor
+     * 2 means exchanging the leader with the best
+     * 3 means exchanging if its performance is gets worse
+     */
+    private int leaderExchangeMode = 1;
+
+    /*
+     * 1 means the flock permutation stays the same
+     * 2 means sorting them according performance
+     */
     private int sortAccordingToPerformance = 1;
-    
-    //leftSide is used for determining the side of the leader
+
+    // leftSide is used for determining the side of the leader
     private boolean leftSide = true;
-    //leaderImproves is used for determining whether the leader improves or not
+    // leaderImproves is used for determining whether the leader improves or not
     private boolean leaderImproves = true;
 
-    //Keep start time and end time for calculating the run time
+    // Keep start time and end time for calculating the run time
     private long startTime;
     private double endTime;
-    
+
     public BirdsAlgorithm(
             int numberOfBirds,
             int numberOfNeighbors,
@@ -51,38 +55,39 @@ public class BirdsAlgorithm extends MetaHeuristic{
             int initialFlockSortedAccToPerf,
             int leaderExchangeMode,
             int sortAccordingToPerformance,
-            String input) 
-            {
-                this.numberOfBirds = numberOfBirds;
-                this.numberOfNeighbors = numberOfNeighbors;
-                this.overLapFactor = overLapFactor;
-                this.initialFlockSortedAccToPerf = initialFlockSortedAccToPerf;
-                this.leaderExchangeMode = leaderExchangeMode;
-                this.sortAccordingToPerformance = sortAccordingToPerformance;
-                this.input = input;
-                checkInputFileFormatAndRead();
-                startTime = System.currentTimeMillis();
-                flock = new Population();
-                createInitialFlock();
-                Solution.resetNumberOfNeighborsCreated();
-                numberOfIterations = (int) Math.pow(Solution.getNumberOfTypes(), 3);
-                while (Solution.getNumberOfNeighborsCreated() < numberOfIterations) {
-                    for (int i = 0; i < numberOfFlapping; i++) {
-                        flyFlock();
-                    }
-                    replaceLeader();
-                    sortTheSuccessors();
-                    leaderImproves = true;
-                }
-                writeResults();
+            String input) {
+        this.numberOfBirds = numberOfBirds;
+        this.numberOfNeighbors = numberOfNeighbors;
+        this.overLapFactor = overLapFactor;
+        this.initialFlockSortedAccToPerf = initialFlockSortedAccToPerf;
+        this.leaderExchangeMode = leaderExchangeMode;
+        this.sortAccordingToPerformance = sortAccordingToPerformance;
+        this.input = input;
+        checkInputFileFormatAndRead();
+        startTime = System.currentTimeMillis();
+        flock = new Population();
+        createInitialFlock();
+        Solution.resetNumberOfNeighborsCreated();
+        numberOfIterations = (int) Math.pow(Solution.getNumberOfTypes(), 3);
+        while (Solution.getNumberOfNeighborsCreated() < numberOfIterations) {
+            for (int i = 0; i < numberOfFlapping; i++) {
+                flyFlock();
             }
+            replaceLeader();
+            sortTheSuccessors();
+            leaderImproves = true;
+        }
+        writeResults();
+    }
 
     /**
-    * Initializes the flock of birds with a specified number of solutions (birds).
-    * Each bird is created and added to the flock. Optionally, the flock can be sorted
-    * based on their performance (fitness) if the 'initialFlockSortedAccToPerf' parameter
-    * is set to 2 (otherwise, the flock is sorted randomly).
-    */
+     * Initializes the flock of birds with a specified number of solutions (birds).
+     * Each bird is created and added to the flock. Optionally, the flock can be
+     * sorted
+     * based on their performance (fitness) if the 'initialFlockSortedAccToPerf'
+     * parameter
+     * is set to 2 (otherwise, the flock is sorted randomly).
+     */
     public void createInitialFlock() {
         for (int i = 0; i < numberOfBirds; i++) {
             flock.add(new Solution(affinity, distance));
@@ -99,16 +104,17 @@ public class BirdsAlgorithm extends MetaHeuristic{
     }
 
     /**
-    * Simulates the flight behavior of a flock of birds (solutions).
-    * 
-    * During each iteration, birds assess their neighbors' performance and consider 
-    * making changes based on their neighbors' fitness. The best neighboring solutions 
-    * are determined and may be transferred to other birds in the flock.
-    */
+     * Simulates the flight behavior of a flock of birds (solutions).
+     * 
+     * During each iteration, birds assess their neighbors' performance and consider
+     * making changes based on their neighbors' fitness. The best neighboring
+     * solutions
+     * are determined and may be transferred to other birds in the flock.
+     */
     public void flyFlock() {
         // Bird-related variables
         Solution leader, currentSolutionTODO, bestOther;
-    
+
         // An array to store the best neighboring solutions for each bird
         Solution bests[] = new Solution[numberOfBirds];
 
@@ -119,15 +125,14 @@ public class BirdsAlgorithm extends MetaHeuristic{
         for (int i = 1; i < numberOfBirds; i++) {
             flock.get(i).createNeighborSet(numberOfNeighbors - overLapFactor, flock.chooseRandomMate(i));
         }
-        
+
         // Determine the best neighbors for the leader and the second bird
         leader = flock.get(0);
         bests[0] = leader.getBestNeighbour();
 
-
         currentSolutionTODO = flock.get(1);
         bestOther = currentSolutionTODO.getBestNeighbour();
-        
+
         if (bestOther.getFitness() <= currentSolutionTODO.getFitness()) {
             bests[1] = bestOther;
         } else if (leader.checkBestNeighbour().getFitness() <= currentSolutionTODO.getFitness()) {
@@ -136,7 +141,7 @@ public class BirdsAlgorithm extends MetaHeuristic{
             bests[1] = flock.get(1);
         }
 
-        //Why there is a spesiific case for the third bird?
+        // Why there is a spesiific case for the third bird?
         currentSolutionTODO = flock.get(2);
         bestOther = currentSolutionTODO.getBestNeighbour();
         if (bestOther.getFitness() <= currentSolutionTODO.getFitness()) {
@@ -151,7 +156,7 @@ public class BirdsAlgorithm extends MetaHeuristic{
         for (int i = 3; i < numberOfBirds; i++) {
             currentSolutionTODO = flock.get(i);
             bestOther = currentSolutionTODO.getBestNeighbour();
-            
+
             if (bestOther.getFitness() <= currentSolutionTODO.getFitness()) {
                 bests[i] = bestOther;
             } else if (flock.get(i - 2).checkBestNeighbour().getFitness() <= currentSolutionTODO.getFitness()) {
@@ -173,9 +178,9 @@ public class BirdsAlgorithm extends MetaHeuristic{
                 flock.add(i, bests[i]);
             }
         }
-	
 
-        //Solution leader,cs,besto;//best 1 used for repalcing the leader, best other used for transferring following birds
+        // Solution leader,cs,besto;//best 1 used for repalcing the leader, best other
+        // used for transferring following birds
         leader = flock.get(0);
         leader.createNeighborSet(numberOfNeighbors, flock.chooseRandomMate(0));
         for (int i = 1; i < numberOfBirds; i++) {
@@ -193,8 +198,10 @@ public class BirdsAlgorithm extends MetaHeuristic{
             }
         }
 
-        //the following birds of the leader are determining their best elements and next olf neighbours are 
-        //trasferred to their followers.  Finally if a solution's best nghbr is better than it, it is replaced. 
+        // the following birds of the leader are determining their best elements and
+        // next olf neighbours are
+        // trasferred to their followers. Finally if a solution's best nghbr is better
+        // than it, it is replaced.
         for (int i = 1; i < numberOfBirds - 2; i++) {
             currentSolutionTODO = flock.get(i);
             bests[i] = currentSolutionTODO.getBestNeighbour();
@@ -208,24 +215,24 @@ public class BirdsAlgorithm extends MetaHeuristic{
 
         if (flock.get(0).getFitness() <= bests[0].getFitness())
             leaderImproves = false;
-        //replace the current birds with their best nghbrs, if they are better
+        // replace the current birds with their best nghbrs, if they are better
         for (int i = 0; i < numberOfBirds; i++) {
             if (flock.get(i).getFitness() >= bests[i].getFitness()) {
                 flock.remove(i);
                 flock.add(i, bests[i]);
             }
-        } 
+        }
     }
 
     public void replaceLeader() {
         switch (leaderExchangeMode) {
-            case 1://change with the immediate successor
+            case 1:// change with the immediate successor
                 replaceLeaderWithSuccessor();
                 break;
-            case 2://change with the best
+            case 2:// change with the best
                 replaceLeaderWithBest();
                 break;
-            case 3://change with the best if leader does not improve
+            case 3:// change with the best if leader does not improve
                 if (!leaderImproves) {
                     replaceLeaderWithBest();
                 }
@@ -234,7 +241,7 @@ public class BirdsAlgorithm extends MetaHeuristic{
     }
 
     public void replaceLeaderWithSuccessor() {
-        Population nf = new Population();//new flock
+        Population nf = new Population();// new flock
         if (leftSide) {
             nf.add(flock.get(1));
             for (int i = 1; i < numberOfBirds - 2; i++) {
@@ -260,18 +267,19 @@ public class BirdsAlgorithm extends MetaHeuristic{
     }
 
     public void replaceLeaderWithBest() {
-        Population newFlock = new Population();//new flock
+        Population newFlock = new Population();// new flock
         int best = 0;
         for (int i = 1; i < flock.size(); i++) {
             if (flock.get(i).getFitness() <= flock.get(best).getFitness()) {
                 best = i;
             }
         }
-        if (best == 0) return;//if best of the flock is the leader itself, then simply return
+        if (best == 0)
+            return;// if best of the flock is the leader itself, then simply return
         newFlock.add(flock.get(best));
         for (int i = 1; i < best; i++)
             newFlock.add(flock.get(i));
-        if (best % 2 == 1) {//if best is located on left
+        if (best % 2 == 1) {// if best is located on left
             for (int i = best; i < numberOfBirds - 2; i++) {
                 if (i % 2 == 1)
                     newFlock.add(flock.get(i + 2));
@@ -280,7 +288,7 @@ public class BirdsAlgorithm extends MetaHeuristic{
             }
             newFlock.add(flock.get(0));
             newFlock.add(flock.get(numberOfBirds - 1));
-        } else {//if best is located on right
+        } else {// if best is located on right
             for (int i = best; i < numberOfBirds - 1; i++) {
                 if (i % 2 == 1)
                     newFlock.add(flock.get(i));
@@ -312,24 +320,25 @@ public class BirdsAlgorithm extends MetaHeuristic{
     }
 
     public void writeResults() {
-//comment out the following pirces of code for writing the results to a file
-//	    try {
-//	        BufferedWriter out = new BufferedWriter(new FileWriter(res,true));
-//	        endTime=(System.currentTimeMillis()-startTime)/(double) 1000;
-//	        out.write(input+"\t"+flock.getMin().getFitness()+"\t"+nob+"\t"+non+"\t"+nof+"\t"+olf+"\t"+Solution.getNumberOfNeighborsCreated()+"\t"+endTime+"\t"+(density)+"\t"+Solution.getNumberOfTypes()+"\t\n");
-//	        out.close();
-//	    } catch (IOException e) {
-//	    	System.out.println(e);
-//	    }
-//	    try {
-//	        BufferedWriter out = new BufferedWriter(new FileWriter(bestRes,true));
-//	        out.write(input+": "+flock.getMin()+" "+flock.getMin().getFitness()+"\t\n");
-//	        out.close();
-//	    } catch (IOException e) {
-//	    	System.out.println(e);
-//	    }
+        // comment out the following pirces of code for writing the results to a file
+        // try {
+        // BufferedWriter out = new BufferedWriter(new FileWriter(res,true));
+        // endTime=(System.currentTimeMillis()-startTime)/(double) 1000;
+        // out.write(input+"\t"+flock.getMin().getFitness()+"\t"+nob+"\t"+non+"\t"+nof+"\t"+olf+"\t"+Solution.getNumberOfNeighborsCreated()+"\t"+endTime+"\t"+(density)+"\t"+Solution.getNumberOfTypes()+"\t\n");
+        // out.close();
+        // } catch (IOException e) {
+        // System.out.println(e);
+        // }
+        // try {
+        // BufferedWriter out = new BufferedWriter(new FileWriter(bestRes,true));
+        // out.write(input+": "+flock.getMin()+" "+flock.getMin().getFitness()+"\t\n");
+        // out.close();
+        // } catch (IOException e) {
+        // System.out.println(e);
+        // }
         endTime = (System.currentTimeMillis() - startTime) / (double) 1000;
-        JOptionPane.showMessageDialog(null, "Input file: " + input + "\nSolution Permutation: " + flock.getMin() + "\nCost of the solution: " + flock.getMin().getFitness() + "\nRun time: " + endTime + " seconds.");
+        JOptionPane.showMessageDialog(null, "Input file: " + input + "\nSolution Permutation: " + flock.getMin()
+                + "\nCost of the solution: " + flock.getMin().getFitness() + "\nRun time: " + endTime + " seconds.");
     }
 
 }

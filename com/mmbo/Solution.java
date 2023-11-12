@@ -13,14 +13,16 @@ public class Solution implements Comparable, Cloneable {
     /**
      * n denotes number of people and offices.
      */
-    private int permutation[]; //permutation has length n+1, index 0 is not used because component types in feeder will be assigned to slots 1 to n
-    private int[][] affinity, distance; //affinity and distance has length n+1 x n+1, index 0 is used for numberOfTypes
+    private int permutation[]; // permutation has length n+1, index 0 is not used because component types in
+                               // feeder will be assigned to slots 1 to n
+    private int[][] affinity, distance; // affinity and distance has length n+1 x n+1, index 0 is used for numberOfTypes
     private double cost;
     private static int numberOfTypes;
     private ArrayList<Solution> neighbourSet;
-    private static int numberOfNeighborsCreated = 0; //counter designed for counting # of neighbors created. Criterion used for stopping BirdsAlgorithm.
+    private static int numberOfNeighborsCreated = 0; // counter designed for counting # of neighbors created. Criterion
+                                                     // used for stopping BirdsAlgorithm.
     private Memeplex memeplex;
-    
+
     /**
      * creates a solution with the given affinity and distance matrices
      */
@@ -32,8 +34,9 @@ public class Solution implements Comparable, Cloneable {
         calculateCost();
     }
 
-     /**
-     * creates a solution with the given permutation array will be used for cloning and changing permutation
+    /**
+     * creates a solution with the given permutation array will be used for cloning
+     * and changing permutation
      */
     public Solution(Solution otherSolution, int permutation[]) {
         this.affinity = otherSolution.affinity;
@@ -103,7 +106,7 @@ public class Solution implements Comparable, Cloneable {
         neighbourSet = new ArrayList<Solution>();
         Solution parameter1Solution, parameter2Solution;
 
-        if(this.getCost() < mate.getCost()){
+        if (this.getCost() < mate.getCost()) {
             parameter1Solution = this;
             parameter2Solution = mate;
         } else {
@@ -111,11 +114,12 @@ public class Solution implements Comparable, Cloneable {
             parameter2Solution = this;
         }
         for (int i = 0; i < nongbr; i++) {
-            //neighbourSet.add(randomSwapMutation());
+            // neighbourSet.add(randomSwapMutation());
             Solution child = Crossover.applyCrossover(memeplex.getCrossover(), parameter1Solution, parameter2Solution);
             child = Mutation.applyMutation(memeplex.getMutation(), memeplex.getMutationIntensity(), child);
             child = LocalSearch.applyLocalSearch(memeplex.getLocalSearch(), memeplex.getDepthOfLocalSearch(), child);
-            if(Math.random() < 0.20) child.memeplex = new Memeplex();
+            if (Math.random() < 0.20)
+                child.memeplex = new Memeplex();
             neighbourSet.add(child);
             numberOfNeighborsCreated++;
         }
@@ -132,7 +136,8 @@ public class Solution implements Comparable, Cloneable {
     }
 
     /**
-     * returns best neighbor of this solution and DOES NOT remove it from the neighbor set
+     * returns best neighbor of this solution and DOES NOT remove it from the
+     * neighbor set
      */
     public Solution checkBestNeighbour() {
         Solution bestNeighbour = neighbourSet.get(0);
@@ -165,7 +170,8 @@ public class Solution implements Comparable, Cloneable {
     }
 
     /**
-     * overidden for cloning objects when the same copy is created while crossover is applied
+     * overidden for cloning objects when the same copy is created while crossover
+     * is applied
      */
     public Object clone() {
         int conf[] = new int[permutation.length];
@@ -181,7 +187,8 @@ public class Solution implements Comparable, Cloneable {
     public int compareTo(Object o) {
         if (o instanceof Solution) {
             return (int) (this.getFitness() - ((Solution) o).getFitness());
-        } else return 0;
+        } else
+            return 0;
     }
 
     /**
@@ -199,6 +206,9 @@ public class Solution implements Comparable, Cloneable {
         for (int i = 1; i < permutation.length; i++) {
             conf += permutation[i] + ", ";
         }
+        conf += "\nMemeplex of the solution: " + memeplex.getCrossover() + " " + memeplex.getMutation() + " "
+                + memeplex.getMutationIntensity() + " " + memeplex.getLocalSearch() + " "
+                + memeplex.getDepthOfLocalSearch() + " ";
         return conf;
     }
 
@@ -211,7 +221,8 @@ public class Solution implements Comparable, Cloneable {
         boolean same = true;
         for (int i = 1; i < permutation.length; i++) {
             same = permutation[i] == sfc[i];
-            if (!same) break;
+            if (!same)
+                break;
         }
         return same;
     }
@@ -224,7 +235,8 @@ public class Solution implements Comparable, Cloneable {
     }
 
     /**
-     * returns number of neighbors created so far from the last call of resetNumberOfNeighborsCreated()
+     * returns number of neighbors created so far from the last call of
+     * resetNumberOfNeighborsCreated()
      *
      * @return
      */
