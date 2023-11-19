@@ -328,6 +328,18 @@ public class BirdsAlgorithm extends MetaHeuristic{
 //	    } catch (IOException e) {
 //	    	System.out.println(e);
 //	    }
+
+        // Example data to be written to the Excel file
+        String[][] newData = {
+            {"PMX", String.valueOf(flock.getMin().getFitness())},
+            {"Local Search", "780"}
+        };
+
+        // Specify the file path where you want to save the Excel file
+        String filePath = "results.xlsx";
+
+        // Create an instance of ExcelWriter and call the appendResultsToExcel method
+        ExcelWriter.appendResultsToExcel(newData, filePath);
         endTime = (System.currentTimeMillis() - startTime) / (double) 1000;
         JOptionPane.showMessageDialog(null, "Input file: " + input + "\nSolution Permutation: " + flock.getMin() + "\nCost of the solution: " + flock.getMin().getFitness() + "\nRun time: " + endTime + " seconds.");
     }
