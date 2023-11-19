@@ -21,7 +21,7 @@ public class Solution implements Comparable, Cloneable {
     private ArrayList<Solution> neighbourSet;
     private static int numberOfNeighborsCreated = 0; // counter designed for counting # of neighbors created. Criterion
                                                      // used for stopping BirdsAlgorithm.
-    private Memeplex memeplex;
+    public Memeplex memeplex;
 
     /**
      * creates a solution with the given affinity and distance matrices

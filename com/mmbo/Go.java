@@ -12,7 +12,7 @@ import javax.swing.JTextField;
 import java.awt.GridLayout;
 
 public class Go {
-    public static final boolean DEBUG_MODE = true;
+    public static final boolean DEBUG_MODE = false;
 
     public static void main(String[] args) {
         String file = "";

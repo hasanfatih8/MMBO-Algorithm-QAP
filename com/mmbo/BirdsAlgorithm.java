@@ -312,35 +312,25 @@ public class BirdsAlgorithm extends MetaHeuristic{
     }
 
     public void writeResults() {
-//comment out the following pirces of code for writing the results to a file
-//	    try {
-//	        BufferedWriter out = new BufferedWriter(new FileWriter(res,true));
-//	        endTime=(System.currentTimeMillis()-startTime)/(double) 1000;
-//	        out.write(input+"\t"+flock.getMin().getFitness()+"\t"+nob+"\t"+non+"\t"+nof+"\t"+olf+"\t"+Solution.getNumberOfNeighborsCreated()+"\t"+endTime+"\t"+(density)+"\t"+Solution.getNumberOfTypes()+"\t\n");
-//	        out.close();
-//	    } catch (IOException e) {
-//	    	System.out.println(e);
-//	    }
-//	    try {
-//	        BufferedWriter out = new BufferedWriter(new FileWriter(bestRes,true));
-//	        out.write(input+": "+flock.getMin()+" "+flock.getMin().getFitness()+"\t\n");
-//	        out.close();
-//	    } catch (IOException e) {
-//	    	System.out.println(e);
-//	    }
+        endTime = (System.currentTimeMillis() - startTime) / (double) 1000;
 
-        // Example data to be written to the Excel file
         String[][] newData = {
-            {"PMX", String.valueOf(flock.getMin().getFitness())},
-            {"Local Search", "780"}
+            {String.valueOf(numberOfBirds),String.valueOf(numberOfNeighbors), String.valueOf(overLapFactor), String.valueOf(numberOfIterations),
+                String.valueOf(flock.getMin().getFitness()), String.valueOf(Solution.getNumberOfNeighborsCreated()), String.valueOf(endTime), String.valueOf(density), 
+                String.valueOf(Solution.getNumberOfTypes()), 
+                String.valueOf(flock.getMin().memeplex.getCrossover()), 
+                String.valueOf(flock.getMin().memeplex.getMutation()), String.valueOf(flock.getMin().memeplex.getMutationIntensity()), 
+                String.valueOf(flock.getMin().memeplex.getLocalSearch()), String.valueOf(flock.getMin().memeplex.getDepthOfLocalSearch()) 
+            }
         };
 
         // Specify the file path where you want to save the Excel file
         String filePath = "results.xlsx";
 
+        
+        
         // Create an instance of ExcelWriter and call the appendResultsToExcel method
         ExcelWriter.appendResultsToExcel(newData, filePath);
-        endTime = (System.currentTimeMillis() - startTime) / (double) 1000;
         JOptionPane.showMessageDialog(null, "Input file: " + input + "\nSolution Permutation: " + flock.getMin() + "\nCost of the solution: " + flock.getMin().getFitness() + "\nRun time: " + endTime + " seconds.");
     }
 
