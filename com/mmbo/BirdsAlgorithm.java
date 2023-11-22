@@ -60,6 +60,8 @@ public class BirdsAlgorithm extends MetaHeuristic{
                 this.leaderExchangeMode = leaderExchangeMode;
                 this.sortAccordingToPerformance = sortAccordingToPerformance;
                 this.input = input;
+                Solution.achievementScore = new UtilityScore();
+                Solution.utilityScore = new UtilityScore();
                 checkInputFileFormatAndRead();
                 startTime = System.currentTimeMillis();
                 flock = new Population();

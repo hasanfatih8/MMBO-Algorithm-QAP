@@ -21,8 +21,8 @@ public class Solution implements Comparable, Cloneable {
     private ArrayList<Solution> neighbourSet;
     private static int numberOfNeighborsCreated = 0; // counter designed for counting # of neighbors created. Criterion
                                                      // used for stopping BirdsAlgorithm.
-    static UtilityScore utilityScore = new UtilityScore(); // utility score for memeplexes which creates better solution
-    static UtilityScore achievementScore = new UtilityScore(); // utility score for memeplexes which occured in the past
+    static UtilityScore utilityScore; // utility score for memeplexes which creates better solution
+    static UtilityScore achievementScore; // utility score for memeplexes which occured in the past
     public Memeplex memeplex;
 
     /**
