@@ -2,3 +2,4 @@
 *.class
 .vscode/
 logOutput.txt
+results.xlsx
