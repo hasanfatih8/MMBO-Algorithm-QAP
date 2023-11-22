@@ -39,7 +39,7 @@ public class Go {
             JTextField nField = new JTextField("51", 5);
             paramPanel.add(nField);
             paramPanel.add(new JLabel("\nk - number of neighbor solutions to be considered(3):"));
-            JTextField kField = new JTextField("5", 5);
+            JTextField kField = new JTextField("3", 5);
             paramPanel.add(kField);
             paramPanel.add(new JLabel("\nm - number of tours(10):"));
             JTextField mField = new JTextField("10", 5);

@@ -323,6 +323,56 @@ public class BirdsAlgorithm extends MetaHeuristic{
                 String.valueOf(flock.getMin().memeplex.getLocalSearch()), String.valueOf(flock.getMin().memeplex.getDepthOfLocalSearch()) 
             }
         };
+        
+
+        
+        // TODO: We will delete this printing when the results added to results.xlsx
+
+        System.out.println("Utility Results: \n");
+
+        UtilityScore us = Solution.utilityScore;
+        System.out.println("PMX: " + us.getCX_Counter());
+        System.out.println("OX: " + us.getOX_Counter());
+        System.out.println("CX: " + us.getCX_Counter());
+        System.out.println("SwapRandom: " + us.getSwapRandom_Counter());
+        System.out.println("SwapBest: " + us.getSwapBest_Counter());
+        System.out.println("ScrambleSwap: " + us.getScrambleSwap_Counter());
+        System.out.println("SwapFirstII: " + us.getSwapFirstII_Counter());
+        System.out.println("SwapBestII: " + us.getSwapBestII_Counter());
+        System.out.println("MutationIntensity_0_2: " + us.getMutationIntensity_0_2_Counter());
+        System.out.println("MutationIntensity_0_4: " + us.getMutationIntensity_0_4_Counter());
+        System.out.println("MutationIntensity_0_6: " + us.getMutationIntensity_0_6_Counter());
+        System.out.println("MutationIntensity_0_8: " + us.getMutationIntensity_0_8_Counter());
+        System.out.println("MutationIntensity_1: " + us.getMutationIntensity_1_Counter());
+        System.out.println("DepthOfLocalSearch_1: " + us.getDepthOfLocalSearch_1_Counter());
+        System.out.println("DepthOfLocalSearch_2: " + us.getDepthOfLocalSearch_2_Counter());
+        System.out.println("DepthOfLocalSearch_3: " + us.getDepthOfLocalSearch_3_Counter());
+        System.out.println("DepthOfLocalSearch_4: " + us.getDepthOfLocalSearch_4_Counter());
+        System.out.println("DepthOfLocalSearch_5: " + us.getDepthOfLocalSearch_5_Counter());
+
+
+        System.out.println("\nOccured Results: \n");
+
+        us = Solution.occuredScore;
+
+        System.out.println("PMX: " + us.getCX_Counter());
+        System.out.println("OX: " + us.getOX_Counter());
+        System.out.println("CX: " + us.getCX_Counter());
+        System.out.println("SwapRandom: " + us.getSwapRandom_Counter());
+        System.out.println("SwapBest: " + us.getSwapBest_Counter());
+        System.out.println("ScrambleSwap: " + us.getScrambleSwap_Counter());
+        System.out.println("SwapFirstII: " + us.getSwapFirstII_Counter());
+        System.out.println("SwapBestII: " + us.getSwapBestII_Counter());
+        System.out.println("MutationIntensity_0_2: " + us.getMutationIntensity_0_2_Counter());
+        System.out.println("MutationIntensity_0_4: " + us.getMutationIntensity_0_4_Counter());
+        System.out.println("MutationIntensity_0_6: " + us.getMutationIntensity_0_6_Counter());
+        System.out.println("MutationIntensity_0_8: " + us.getMutationIntensity_0_8_Counter());
+        System.out.println("MutationIntensity_1: " + us.getMutationIntensity_1_Counter());
+        System.out.println("DepthOfLocalSearch_1: " + us.getDepthOfLocalSearch_1_Counter());
+        System.out.println("DepthOfLocalSearch_2: " + us.getDepthOfLocalSearch_2_Counter());
+        System.out.println("DepthOfLocalSearch_3: " + us.getDepthOfLocalSearch_3_Counter());
+        System.out.println("DepthOfLocalSearch_4: " + us.getDepthOfLocalSearch_4_Counter());
+        System.out.println("DepthOfLocalSearch_5: " + us.getDepthOfLocalSearch_5_Counter());
 
         // Specify the file path where you want to save the Excel file
         String filePath = "results.xlsx";
