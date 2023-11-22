@@ -320,65 +320,25 @@ public class BirdsAlgorithm extends MetaHeuristic{
                 String.valueOf(Solution.getNumberOfTypes()), 
                 String.valueOf(flock.getMin().memeplex.getCrossover()), 
                 String.valueOf(flock.getMin().memeplex.getMutation()), String.valueOf(flock.getMin().memeplex.getMutationIntensity()), 
-                String.valueOf(flock.getMin().memeplex.getLocalSearch()), String.valueOf(flock.getMin().memeplex.getDepthOfLocalSearch()) 
+                String.valueOf(flock.getMin().memeplex.getLocalSearch()), String.valueOf(flock.getMin().memeplex.getDepthOfLocalSearch()) ,
+                String.valueOf(Solution.utilityScore.getPMX_Counter()), String.valueOf(Solution.utilityScore.getOX_Counter()), String.valueOf(Solution.utilityScore.getCX_Counter()),
+                String.valueOf(Solution.utilityScore.getSwapRandom_Counter()), String.valueOf(Solution.utilityScore.getSwapBest_Counter()), String.valueOf(Solution.utilityScore.getScrambleSwap_Counter()),
+                String.valueOf(Solution.utilityScore.getSwapFirstII_Counter()), String.valueOf(Solution.utilityScore.getSwapBestII_Counter()), String.valueOf(Solution.utilityScore.getMutationIntensity_0_2_Counter()),
+                String.valueOf(Solution.utilityScore.getMutationIntensity_0_4_Counter()), String.valueOf(Solution.utilityScore.getMutationIntensity_0_6_Counter()), String.valueOf(Solution.utilityScore.getMutationIntensity_0_8_Counter()),
+                String.valueOf(Solution.utilityScore.getMutationIntensity_1_Counter()), String.valueOf(Solution.utilityScore.getDepthOfLocalSearch_1_Counter()), String.valueOf(Solution.utilityScore.getDepthOfLocalSearch_2_Counter()),
+                String.valueOf(Solution.utilityScore.getDepthOfLocalSearch_3_Counter()), String.valueOf(Solution.utilityScore.getDepthOfLocalSearch_4_Counter()), String.valueOf(Solution.utilityScore.getDepthOfLocalSearch_5_Counter()),
+                String.valueOf(Solution.achievementScore.getPMX_Counter()), String.valueOf(Solution.achievementScore.getOX_Counter()), String.valueOf(Solution.achievementScore.getCX_Counter()),
+                String.valueOf(Solution.achievementScore.getSwapRandom_Counter()), String.valueOf(Solution.achievementScore.getSwapBest_Counter()), String.valueOf(Solution.achievementScore.getScrambleSwap_Counter()),
+                String.valueOf(Solution.achievementScore.getSwapFirstII_Counter()), String.valueOf(Solution.achievementScore.getSwapBestII_Counter()), String.valueOf(Solution.achievementScore.getMutationIntensity_0_2_Counter()),
+                String.valueOf(Solution.achievementScore.getMutationIntensity_0_4_Counter()), String.valueOf(Solution.achievementScore.getMutationIntensity_0_6_Counter()), String.valueOf(Solution.achievementScore.getMutationIntensity_0_8_Counter()),
+                String.valueOf(Solution.achievementScore.getMutationIntensity_1_Counter()), String.valueOf(Solution.achievementScore.getDepthOfLocalSearch_1_Counter()), String.valueOf(Solution.achievementScore.getDepthOfLocalSearch_2_Counter()),
+                String.valueOf(Solution.achievementScore.getDepthOfLocalSearch_3_Counter()), String.valueOf(Solution.achievementScore.getDepthOfLocalSearch_4_Counter()), String.valueOf(Solution.achievementScore.getDepthOfLocalSearch_5_Counter())
             }
         };
-        
-
-        
-        // TODO: We will delete this printing when the results added to results.xlsx
-
-        System.out.println("Utility Results: \n");
-
-        UtilityScore us = Solution.utilityScore;
-        System.out.println("PMX: " + us.getCX_Counter());
-        System.out.println("OX: " + us.getOX_Counter());
-        System.out.println("CX: " + us.getCX_Counter());
-        System.out.println("SwapRandom: " + us.getSwapRandom_Counter());
-        System.out.println("SwapBest: " + us.getSwapBest_Counter());
-        System.out.println("ScrambleSwap: " + us.getScrambleSwap_Counter());
-        System.out.println("SwapFirstII: " + us.getSwapFirstII_Counter());
-        System.out.println("SwapBestII: " + us.getSwapBestII_Counter());
-        System.out.println("MutationIntensity_0_2: " + us.getMutationIntensity_0_2_Counter());
-        System.out.println("MutationIntensity_0_4: " + us.getMutationIntensity_0_4_Counter());
-        System.out.println("MutationIntensity_0_6: " + us.getMutationIntensity_0_6_Counter());
-        System.out.println("MutationIntensity_0_8: " + us.getMutationIntensity_0_8_Counter());
-        System.out.println("MutationIntensity_1: " + us.getMutationIntensity_1_Counter());
-        System.out.println("DepthOfLocalSearch_1: " + us.getDepthOfLocalSearch_1_Counter());
-        System.out.println("DepthOfLocalSearch_2: " + us.getDepthOfLocalSearch_2_Counter());
-        System.out.println("DepthOfLocalSearch_3: " + us.getDepthOfLocalSearch_3_Counter());
-        System.out.println("DepthOfLocalSearch_4: " + us.getDepthOfLocalSearch_4_Counter());
-        System.out.println("DepthOfLocalSearch_5: " + us.getDepthOfLocalSearch_5_Counter());
-
-
-        System.out.println("\nOccured Results: \n");
-
-        us = Solution.occuredScore;
-
-        System.out.println("PMX: " + us.getCX_Counter());
-        System.out.println("OX: " + us.getOX_Counter());
-        System.out.println("CX: " + us.getCX_Counter());
-        System.out.println("SwapRandom: " + us.getSwapRandom_Counter());
-        System.out.println("SwapBest: " + us.getSwapBest_Counter());
-        System.out.println("ScrambleSwap: " + us.getScrambleSwap_Counter());
-        System.out.println("SwapFirstII: " + us.getSwapFirstII_Counter());
-        System.out.println("SwapBestII: " + us.getSwapBestII_Counter());
-        System.out.println("MutationIntensity_0_2: " + us.getMutationIntensity_0_2_Counter());
-        System.out.println("MutationIntensity_0_4: " + us.getMutationIntensity_0_4_Counter());
-        System.out.println("MutationIntensity_0_6: " + us.getMutationIntensity_0_6_Counter());
-        System.out.println("MutationIntensity_0_8: " + us.getMutationIntensity_0_8_Counter());
-        System.out.println("MutationIntensity_1: " + us.getMutationIntensity_1_Counter());
-        System.out.println("DepthOfLocalSearch_1: " + us.getDepthOfLocalSearch_1_Counter());
-        System.out.println("DepthOfLocalSearch_2: " + us.getDepthOfLocalSearch_2_Counter());
-        System.out.println("DepthOfLocalSearch_3: " + us.getDepthOfLocalSearch_3_Counter());
-        System.out.println("DepthOfLocalSearch_4: " + us.getDepthOfLocalSearch_4_Counter());
-        System.out.println("DepthOfLocalSearch_5: " + us.getDepthOfLocalSearch_5_Counter());
 
         // Specify the file path where you want to save the Excel file
         String filePath = "results.xlsx";
 
-        
-        
         // Create an instance of ExcelWriter and call the appendResultsToExcel method
         ExcelWriter.appendResultsToExcel(newData, filePath);
         JOptionPane.showMessageDialog(null, "Input file: " + input + "\nSolution Permutation: " + flock.getMin() + "\nCost of the solution: " + flock.getMin().getFitness() + "\nRun time: " + endTime + " seconds.");

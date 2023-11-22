@@ -22,7 +22,7 @@ public class Solution implements Comparable, Cloneable {
     private static int numberOfNeighborsCreated = 0; // counter designed for counting # of neighbors created. Criterion
                                                      // used for stopping BirdsAlgorithm.
     static UtilityScore utilityScore = new UtilityScore(); // utility score for memeplexes which creates better solution
-    static UtilityScore occuredScore = new UtilityScore(); // utility score for memeplexes which occured in the past
+    static UtilityScore achievementScore = new UtilityScore(); // utility score for memeplexes which occured in the past
     public Memeplex memeplex;
 
     /**
@@ -120,16 +120,18 @@ public class Solution implements Comparable, Cloneable {
             Solution child = Crossover.applyCrossover(memeplex.getCrossover(), parameter1Solution, parameter2Solution);
             child = Mutation.applyMutation(memeplex.getMutation(), memeplex.getMutationIntensity(), child);
             child = LocalSearch.applyLocalSearch(memeplex.getLocalSearch(), memeplex.getDepthOfLocalSearch(), child);
+
+            utilityScore.addNewMemeplex(child.memeplex);
+            if (this.compareTo(child) < 0) {
+                achievementScore.addNewMemeplex(child.memeplex);
+            }
+            
             if (Math.random() < 0.20)
                 child.memeplex = new Memeplex();
-            occuredScore.addNewMemeplex(child.memeplex);
             neighbourSet.add(child);
             numberOfNeighborsCreated++;
         }
         sortNeighbours();
-        if (this.compareTo(neighbourSet.get(0)) < 0) { // if the best neighbor is better than this solution
-            utilityScore.addNewMemeplex(memeplex);
-        }
     }
 
     /**
