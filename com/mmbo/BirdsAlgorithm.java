@@ -331,7 +331,7 @@ public class BirdsAlgorithm extends MetaHeuristic{
         
         // Create an instance of ExcelWriter and call the appendResultsToExcel method
         ExcelWriter.appendResultsToExcel(newData, filePath);
-        JOptionPane.showMessageDialog(null, "Input file: " + input + "\nSolution Permutation: " + flock.getMin() + "\nCost of the solution: " + flock.getMin().getFitness() + "\nRun time: " + endTime + " seconds.");
+        //JOptionPane.showMessageDialog(null, "Input file: " + input + "\nSolution Permutation: " + flock.getMin() + "\nCost of the solution: " + flock.getMin().getFitness() + "\nRun time: " + endTime + " seconds.");
     }
 
 }

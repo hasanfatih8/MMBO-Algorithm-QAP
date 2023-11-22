@@ -68,8 +68,10 @@ public class Go {
                     System.setOut(printStream);
 
                     // BirdsAlgorithm instantiation here with the obtained parameters.
-                    BirdsAlgorithm ba = new BirdsAlgorithm(numberOfInitialSolutions, numberOfNeighborSolutions,
-                            numberOfTours, numberOfSharedWithNextSolution, 1, 1, 1, file);
+                    for(int i=0; i<10; i++) {
+                        new BirdsAlgorithm(numberOfInitialSolutions, numberOfNeighborSolutions,
+                                numberOfTours, numberOfSharedWithNextSolution, 1, 1, 1, file);
+                    }
                     // Restore the original System.out
                     System.setOut(originalSystemOut);
                     // Close the fileOutputStream
