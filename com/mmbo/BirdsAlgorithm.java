@@ -320,15 +320,25 @@ public class BirdsAlgorithm extends MetaHeuristic{
                 String.valueOf(Solution.getNumberOfTypes()), 
                 String.valueOf(flock.getMin().memeplex.getCrossover()), 
                 String.valueOf(flock.getMin().memeplex.getMutation()), String.valueOf(flock.getMin().memeplex.getMutationIntensity()), 
-                String.valueOf(flock.getMin().memeplex.getLocalSearch()), String.valueOf(flock.getMin().memeplex.getDepthOfLocalSearch()) 
+                String.valueOf(flock.getMin().memeplex.getLocalSearch()), String.valueOf(flock.getMin().memeplex.getDepthOfLocalSearch()) ,
+                String.valueOf(Solution.utilityScore.getPMX_Counter()), String.valueOf(Solution.utilityScore.getOX_Counter()), String.valueOf(Solution.utilityScore.getCX_Counter()),
+                String.valueOf(Solution.utilityScore.getSwapRandom_Counter()), String.valueOf(Solution.utilityScore.getSwapBest_Counter()), String.valueOf(Solution.utilityScore.getScrambleSwap_Counter()),
+                String.valueOf(Solution.utilityScore.getSwapFirstII_Counter()), String.valueOf(Solution.utilityScore.getSwapBestII_Counter()), String.valueOf(Solution.utilityScore.getMutationIntensity_0_2_Counter()),
+                String.valueOf(Solution.utilityScore.getMutationIntensity_0_4_Counter()), String.valueOf(Solution.utilityScore.getMutationIntensity_0_6_Counter()), String.valueOf(Solution.utilityScore.getMutationIntensity_0_8_Counter()),
+                String.valueOf(Solution.utilityScore.getMutationIntensity_1_Counter()), String.valueOf(Solution.utilityScore.getDepthOfLocalSearch_1_Counter()), String.valueOf(Solution.utilityScore.getDepthOfLocalSearch_2_Counter()),
+                String.valueOf(Solution.utilityScore.getDepthOfLocalSearch_3_Counter()), String.valueOf(Solution.utilityScore.getDepthOfLocalSearch_4_Counter()), String.valueOf(Solution.utilityScore.getDepthOfLocalSearch_5_Counter()),
+                String.valueOf(Solution.achievementScore.getPMX_Counter()), String.valueOf(Solution.achievementScore.getOX_Counter()), String.valueOf(Solution.achievementScore.getCX_Counter()),
+                String.valueOf(Solution.achievementScore.getSwapRandom_Counter()), String.valueOf(Solution.achievementScore.getSwapBest_Counter()), String.valueOf(Solution.achievementScore.getScrambleSwap_Counter()),
+                String.valueOf(Solution.achievementScore.getSwapFirstII_Counter()), String.valueOf(Solution.achievementScore.getSwapBestII_Counter()), String.valueOf(Solution.achievementScore.getMutationIntensity_0_2_Counter()),
+                String.valueOf(Solution.achievementScore.getMutationIntensity_0_4_Counter()), String.valueOf(Solution.achievementScore.getMutationIntensity_0_6_Counter()), String.valueOf(Solution.achievementScore.getMutationIntensity_0_8_Counter()),
+                String.valueOf(Solution.achievementScore.getMutationIntensity_1_Counter()), String.valueOf(Solution.achievementScore.getDepthOfLocalSearch_1_Counter()), String.valueOf(Solution.achievementScore.getDepthOfLocalSearch_2_Counter()),
+                String.valueOf(Solution.achievementScore.getDepthOfLocalSearch_3_Counter()), String.valueOf(Solution.achievementScore.getDepthOfLocalSearch_4_Counter()), String.valueOf(Solution.achievementScore.getDepthOfLocalSearch_5_Counter())
             }
         };
 
         // Specify the file path where you want to save the Excel file
         String filePath = "results.xlsx";
 
-        
-        
         // Create an instance of ExcelWriter and call the appendResultsToExcel method
         ExcelWriter.appendResultsToExcel(newData, filePath);
         //JOptionPane.showMessageDialog(null, "Input file: " + input + "\nSolution Permutation: " + flock.getMin() + "\nCost of the solution: " + flock.getMin().getFitness() + "\nRun time: " + endTime + " seconds.");
