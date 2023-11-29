@@ -122,7 +122,7 @@ public class Solution implements Comparable, Cloneable {
             child = LocalSearch.applyLocalSearch(memeplex.getLocalSearch(), memeplex.getDepthOfLocalSearch(), child);
 
             utilityScore.addNewMemeplex(child.memeplex);
-            if (this.compareTo(child) < 0) {
+            if (this.compareTo(child) > 0) {
                 achievementScore.addNewMemeplex(child.memeplex);
             }
             
