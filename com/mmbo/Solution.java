@@ -101,11 +101,27 @@ public class Solution implements Comparable, Cloneable {
         }
     }
 
+    public Solution randomSwapMutation() {
+        int conf[] = new int[permutation.length];
+        int ex1, ex2;
+        ex1 = 1 + (int) (Math.random() * numberOfTypes);
+        do {
+            ex2 = 1 + (int) (Math.random() * numberOfTypes);
+        } while (ex1 == ex2);
+        for (int i = 0; i < conf.length; i++) {
+            conf[i] = permutation[i];
+        }
+        conf[ex1] = permutation[ex2];
+        conf[ex2] = permutation[ex1];
+        return new Solution(this, conf);
+    }
+
     /**
      * cretaes a neighbor Set of this solution which includes non elements
      */
     public void createNeighborSet(int nongbr, Solution mate) {
         neighbourSet = new ArrayList<Solution>();
+        /* 
         Solution parameter1Solution, parameter2Solution;
 
         if (this.getCost() < mate.getCost()) {
@@ -115,12 +131,15 @@ public class Solution implements Comparable, Cloneable {
             parameter1Solution = mate;
             parameter2Solution = this;
         }
+        */
         for (int i = 0; i < nongbr; i++) {
-            // neighbourSet.add(randomSwapMutation());
+            neighbourSet.add(Mutation.applyMutation(Memeplex.Mutation.SwapBest, 0.2, this));
+            neighbourSet.add(randomSwapMutation());
+            /*
             Solution child = Crossover.applyCrossover(memeplex.getCrossover(), parameter1Solution, parameter2Solution);
-            child = Mutation.applyMutation(memeplex.getMutation(), memeplex.getMutationIntensity(), child);
+            child = Mutation.applyMutation(memeplex.getMutation(), memeplex.getMutationIntensity(), parameter1Solution);
             child = LocalSearch.applyLocalSearch(memeplex.getLocalSearch(), memeplex.getDepthOfLocalSearch(), child);
-
+            
             utilityScore.addNewMemeplex(child.memeplex);
             if (this.compareTo(child) > 0) {
                 achievementScore.addNewMemeplex(child.memeplex);
@@ -129,6 +148,7 @@ public class Solution implements Comparable, Cloneable {
             if (Math.random() < 0.20)
                 child.memeplex = new Memeplex();
             neighbourSet.add(child);
+            */
             numberOfNeighborsCreated++;
         }
         sortNeighbours();
