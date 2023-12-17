@@ -19,12 +19,12 @@ public class Mutation {
      */
     public static Solution applyMutation(Memeplex.Mutation type, double intensity, Solution child) {
         switch(type) {
-            case SwapBest:
+            case SwapRandom:
                 if(Go.DEBUG_MODE){
-                    System.out.println("SwapRandom case selected");
+                    System.out.println("SwapRandom SwapBest case selected");
                 }
                 return swapRandom(intensity, child);
-            case SwapRandom:
+            case SwapBest:
                 if(Go.DEBUG_MODE){
                     System.out.println("SwapBest case selected");
                 }

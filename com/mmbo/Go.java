@@ -65,7 +65,7 @@ public class Go {
                     // Save the current System.out
                     PrintStream originalSystemOut = System.out;
                     // Set System.out to the new PrintStream
-                    System.setOut(printStream);
+                    //System.setOut(printStream);
 
                     // BirdsAlgorithm instantiation here with the obtained parameters.
                     for(int i=0; i<10; i++) {

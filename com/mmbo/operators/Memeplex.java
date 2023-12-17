@@ -10,7 +10,8 @@ public class Memeplex {
     public enum Crossover {
         PMX,
         OX,
-        CX
+        CX,
+        None
     }
     /**
      * Enum for different mutation types.
@@ -52,7 +53,7 @@ public class Memeplex {
 
 
     public Crossover getRandomCrossover() {
-        int random = (int) (Math.random() * 3);
+        int random = (int) (Math.random() * 4);
         switch(random) {
             case 0:
                 return Memeplex.Crossover.PMX;
@@ -61,7 +62,7 @@ public class Memeplex {
             case 2:
                 return Memeplex.Crossover.CX;
             default:
-                return Memeplex.Crossover.PMX;
+                return Memeplex.Crossover.None;
         }
     }
 
