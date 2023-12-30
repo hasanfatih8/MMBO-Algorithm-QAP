@@ -24,8 +24,8 @@ public class UtilityScore {
     private int MutationIntensity_0_8_Counter = 0;
     private int MutationIntensity_1_Counter = 0;
 
-    public void addNewMemeplex(Memeplex memeplex) {
-        switch (memeplex.getCrossover()) {
+    public void addCrossover(Memeplex.Crossover crossover) {
+        switch (crossover) {
             case PMX:
                 PMX_Counter++;
                 break;
@@ -39,8 +39,10 @@ public class UtilityScore {
                 NoneCrossover_Counter++;
                 break;
         }
+    }
 
-        switch (memeplex.getMutation()) {
+    public void addMutation(Memeplex.Mutation mutation) {
+        switch (mutation) {
             case SwapRandom:
                 SwapRandom_Counter++;
                 break;
@@ -53,8 +55,10 @@ public class UtilityScore {
             default:
                 break;
         }
+    }
 
-        switch (memeplex.getLocalSearch()) {
+    public void addLocalSearch(Memeplex.LocalSearch localSearch) {
+        switch (localSearch) {
             case SwapFirstII:
                 SwapFirstII_Counter++;
                 break;
@@ -64,8 +68,10 @@ public class UtilityScore {
             default:
                 break;
         }
+    }
 
-        switch (memeplex.getDepthOfLocalSearch()) {
+    public void addDepthOfLocalSearch(int depthOfLocalSearch) {
+        switch (depthOfLocalSearch) {
             case 1:
                 DepthOfLocalSearch_1_Counter++;
                 break;
@@ -84,8 +90,10 @@ public class UtilityScore {
             default:
                 break;
         }
+    }
 
-        switch ((int)(memeplex.getMutationIntensity()*10)) { // Switch cannot get double values as input so we multiply by 10 and cast to int
+    public void addMutationIntensity(double mutationIntensity) {
+        switch ((int)(mutationIntensity*10)) { // Switch cannot get double values as input so we multiply by 10 and cast to int
             case 2:
                 MutationIntensity_0_2_Counter++;
                 break;
@@ -180,5 +188,27 @@ public class UtilityScore {
 
     public int getMutationIntensity_1_Counter() {
         return MutationIntensity_1_Counter;
+    }
+
+    public void addUtilityScore(UtilityScore utilityScore) {
+        this.PMX_Counter += utilityScore.getPMX_Counter();
+        this.OX_Counter += utilityScore.getOX_Counter();
+        this.CX_Counter += utilityScore.getCX_Counter();
+        this.NoneCrossover_Counter += utilityScore.getNoneCrossover_Counter();
+        this.SwapRandom_Counter += utilityScore.getSwapRandom_Counter();
+        this.SwapBest_Counter += utilityScore.getSwapBest_Counter();
+        this.ScrambleSwap_Counter += utilityScore.getScrambleSwap_Counter();
+        this.SwapFirstII_Counter += utilityScore.getSwapFirstII_Counter();
+        this.SwapBestII_Counter += utilityScore.getSwapBestII_Counter();
+        this.DepthOfLocalSearch_1_Counter += utilityScore.getDepthOfLocalSearch_1_Counter();
+        this.DepthOfLocalSearch_2_Counter += utilityScore.getDepthOfLocalSearch_2_Counter();
+        this.DepthOfLocalSearch_3_Counter += utilityScore.getDepthOfLocalSearch_3_Counter();
+        this.DepthOfLocalSearch_4_Counter += utilityScore.getDepthOfLocalSearch_4_Counter();
+        this.DepthOfLocalSearch_5_Counter += utilityScore.getDepthOfLocalSearch_5_Counter();
+        this.MutationIntensity_0_2_Counter += utilityScore.getMutationIntensity_0_2_Counter();
+        this.MutationIntensity_0_4_Counter += utilityScore.getMutationIntensity_0_4_Counter();
+        this.MutationIntensity_0_6_Counter += utilityScore.getMutationIntensity_0_6_Counter();
+        this.MutationIntensity_0_8_Counter += utilityScore.getMutationIntensity_0_8_Counter();
+        this.MutationIntensity_1_Counter += utilityScore.getMutationIntensity_1_Counter();
     }
 }

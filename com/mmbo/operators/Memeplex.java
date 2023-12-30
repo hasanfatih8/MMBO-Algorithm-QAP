@@ -1,5 +1,7 @@
 package com.mmbo.operators;
 import java.util.Random;
+
+import com.mmbo.UtilityScore;
 /**
  * The `Memeplex` class defines enums for different types of crossover, mutation, and local search operations.
  */
@@ -124,5 +126,108 @@ public class Memeplex {
         return depthOfLocalSearch;
     }
     
+    public static Crossover getBestCrossover(UtilityScore numeratorScore, UtilityScore denominator) {
+        double max = (double)numeratorScore.getCX_Counter() / (double)denominator.getCX_Counter();
+        Crossover bestCrossover = Crossover.CX;
+        
+        if (max < (double)numeratorScore.getOX_Counter() / (double)denominator.getOX_Counter()) {
+            max = (double)numeratorScore.getOX_Counter() / (double)denominator.getOX_Counter();
+            bestCrossover = Crossover.OX;
+        }
 
+        if (max < (double)numeratorScore.getPMX_Counter() / (double)denominator.getPMX_Counter()) {
+            max = (double)numeratorScore.getPMX_Counter() / (double)denominator.getPMX_Counter();
+            bestCrossover = Crossover.PMX;
+        }
+
+        if(max < (double)numeratorScore.getNoneCrossover_Counter() / (double)denominator.getNoneCrossover_Counter()) {
+            max = (double)numeratorScore.getNoneCrossover_Counter() / (double)denominator.getNoneCrossover_Counter();
+            bestCrossover = Crossover.None;
+        }
+
+        return bestCrossover;
+    }
+
+    public static Mutation getBestMutation(UtilityScore numeratorScore, UtilityScore denominator) {
+        double max = (double)numeratorScore.getSwapRandom_Counter() / (double)denominator.getSwapRandom_Counter();
+        Mutation bestMutation = Mutation.SwapRandom;
+        
+        if (max < (double)numeratorScore.getSwapBest_Counter() / (double)denominator.getSwapBest_Counter()) {
+            max = (double)numeratorScore.getSwapBest_Counter() / (double)denominator.getSwapBest_Counter();
+            bestMutation = Mutation.SwapBest;
+        }
+
+        if (max < (double)numeratorScore.getScrambleSwap_Counter() / (double)denominator.getScrambleSwap_Counter()) {
+            max = (double)numeratorScore.getScrambleSwap_Counter() / (double)denominator.getScrambleSwap_Counter();
+            bestMutation = Mutation.ScrambleSwap;
+        }
+
+        return bestMutation;
+    }
+
+    public static double getBestMutationIntensity(UtilityScore numeratorScore, UtilityScore denominator) {
+        double max = (double)numeratorScore.getMutationIntensity_0_2_Counter() / (double)denominator.getMutationIntensity_0_2_Counter();
+        double bestMutationIntensity = 0.2;
+        
+        if (max < (double)numeratorScore.getMutationIntensity_0_4_Counter() / (double)denominator.getMutationIntensity_0_4_Counter()) {
+            max = (double)numeratorScore.getMutationIntensity_0_4_Counter() / (double)denominator.getMutationIntensity_0_4_Counter();
+            bestMutationIntensity = 0.4;
+        }
+
+        if (max < (double)numeratorScore.getMutationIntensity_0_6_Counter() / (double)denominator.getMutationIntensity_0_6_Counter()) {
+            max = (double)numeratorScore.getMutationIntensity_0_6_Counter() / (double)denominator.getMutationIntensity_0_6_Counter();
+            bestMutationIntensity = 0.6;
+        }
+
+        if (max < (double)numeratorScore.getMutationIntensity_0_8_Counter() / (double)denominator.getMutationIntensity_0_8_Counter()) {
+            max = (double)numeratorScore.getMutationIntensity_0_8_Counter() / (double)denominator.getMutationIntensity_0_8_Counter();
+            bestMutationIntensity = 0.8;
+        }
+
+        if (max < (double)numeratorScore.getMutationIntensity_1_Counter() / (double)denominator.getMutationIntensity_1_Counter()) {
+            max = (double)numeratorScore.getMutationIntensity_1_Counter() / (double)denominator.getMutationIntensity_1_Counter();
+            bestMutationIntensity = 1.0;
+        }
+
+        return bestMutationIntensity;
+    }
+
+    public static LocalSearch getBestLocalSearch(UtilityScore numeratorScore, UtilityScore denominator) {
+        double max = (double)numeratorScore.getSwapFirstII_Counter() / (double)denominator.getSwapFirstII_Counter();
+        LocalSearch bestLocalSearch = LocalSearch.SwapFirstII;
+        
+        if (max < (double)numeratorScore.getSwapBestII_Counter() / (double)denominator.getSwapBestII_Counter()) {
+            max = (double)numeratorScore.getSwapBestII_Counter() / (double)denominator.getSwapBestII_Counter();
+            bestLocalSearch = LocalSearch.SwapBestII;
+        }
+
+        return bestLocalSearch;
+    }
+
+    public static int getBestDepthOfLocalSearch(UtilityScore numeratorScore, UtilityScore denominator) {
+        double max = (double)numeratorScore.getDepthOfLocalSearch_1_Counter() / (double)denominator.getDepthOfLocalSearch_1_Counter();
+        int bestDepthOfLocalSearch = 1;
+        
+        if (max < (double)numeratorScore.getDepthOfLocalSearch_2_Counter() / (double)denominator.getDepthOfLocalSearch_2_Counter()) {
+            max = (double)numeratorScore.getDepthOfLocalSearch_2_Counter() / (double)denominator.getDepthOfLocalSearch_2_Counter();
+            bestDepthOfLocalSearch = 2;
+        }
+
+        if (max < (double)numeratorScore.getDepthOfLocalSearch_3_Counter() / (double)denominator.getDepthOfLocalSearch_3_Counter()) {
+            max = (double)numeratorScore.getDepthOfLocalSearch_3_Counter() / (double)denominator.getDepthOfLocalSearch_3_Counter();
+            bestDepthOfLocalSearch = 3;
+        }
+
+        if (max < (double)numeratorScore.getDepthOfLocalSearch_4_Counter() / (double)denominator.getDepthOfLocalSearch_4_Counter()) {
+            max = (double)numeratorScore.getDepthOfLocalSearch_4_Counter() / (double)denominator.getDepthOfLocalSearch_4_Counter();
+            bestDepthOfLocalSearch = 4;
+        }
+
+        if (max < (double)numeratorScore.getDepthOfLocalSearch_5_Counter() / (double)denominator.getDepthOfLocalSearch_5_Counter()) {
+            max = (double)numeratorScore.getDepthOfLocalSearch_5_Counter() / (double)denominator.getDepthOfLocalSearch_5_Counter();
+            bestDepthOfLocalSearch = 5;
+        }
+
+        return bestDepthOfLocalSearch;
+    }
 }

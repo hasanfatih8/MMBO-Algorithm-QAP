@@ -9,6 +9,10 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+
+import com.mmbo.operators.Memeplex;
+import com.mmbo.operators.Memeplex.*;
+
 import java.awt.GridLayout;
 
 public class Go {
@@ -67,11 +71,30 @@ public class Go {
                     // Set System.out to the new PrintStream
                     //System.setOut(printStream);
 
+                    UtilityScore allUtilityScores = new UtilityScore();
+                    UtilityScore allAchievementScores = new UtilityScore();
+
                     // BirdsAlgorithm instantiation here with the obtained parameters.
-                    for(int i=0; i<10; i++) {
+                    for(int i=0; i<15; i++) {
+                        new BirdsAlgorithm(numberOfInitialSolutions, numberOfNeighborSolutions,
+                                numberOfTours, numberOfSharedWithNextSolution, 1, 1, 1, file);
+                        allUtilityScores.addUtilityScore(Solution.utilityScore);
+                        allAchievementScores.addUtilityScore(Solution.achievementScore);
+                    }
+                    
+                    Crossover bestCrossover = Memeplex.getBestCrossover(allAchievementScores, allUtilityScores);
+                    Mutation bestMutation = Memeplex.getBestMutation(allAchievementScores, allUtilityScores);
+                    LocalSearch bestLocalSearch = Memeplex.getBestLocalSearch(allAchievementScores, allUtilityScores);
+                    int bestDepthOfLocalSearch = Memeplex.getBestDepthOfLocalSearch(allAchievementScores, allUtilityScores);
+                    double bestMutationIntensity = Memeplex.getBestMutationIntensity(allAchievementScores, allUtilityScores);
+
+                    Solution.bestMemeplex = new Memeplex(bestCrossover, bestMutation, bestMutationIntensity, bestLocalSearch, bestDepthOfLocalSearch);
+
+                    for(int i=0; i<16; i++) {
                         new BirdsAlgorithm(numberOfInitialSolutions, numberOfNeighborSolutions,
                                 numberOfTours, numberOfSharedWithNextSolution, 1, 1, 1, file);
                     }
+
                     // Restore the original System.out
                     System.setOut(originalSystemOut);
                     // Close the fileOutputStream

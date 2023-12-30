@@ -23,6 +23,7 @@ public class Solution implements Comparable, Cloneable {
                                                      // used for stopping BirdsAlgorithm.
     static UtilityScore utilityScore; // utility score for memeplexes which creates better solution
     static UtilityScore achievementScore; // utility score for memeplexes which occured in the past
+    static Memeplex bestMemeplex; // best memeplex for the second part
     public Memeplex memeplex;
 
     /**
@@ -31,7 +32,7 @@ public class Solution implements Comparable, Cloneable {
     public Solution(int[][] affinity, int[][] distance) {
         this.affinity = affinity;
         this.distance = distance;
-        this.memeplex = new Memeplex();
+        this.memeplex = bestMemeplex != null ? bestMemeplex : new Memeplex();
         createRandomConf();
         calculateCost();
     }
@@ -117,17 +118,33 @@ public class Solution implements Comparable, Cloneable {
         }
         for (int i = 0; i < nongbr; i++) {
             // neighbourSet.add(randomSwapMutation());
-            Solution child = Crossover.applyCrossover(memeplex.getCrossover(), parameter1Solution, parameter2Solution);
-            child = Mutation.applyMutation(memeplex.getMutation(), memeplex.getMutationIntensity(), child);
-            child = LocalSearch.applyLocalSearch(memeplex.getLocalSearch(), memeplex.getDepthOfLocalSearch(), child);
-
-            utilityScore.addNewMemeplex(child.memeplex);
-            if (this.compareTo(child) > 0) {
-                achievementScore.addNewMemeplex(child.memeplex);
+            Solution child = Crossover.applyCrossover(parameter1Solution.memeplex.getCrossover(), parameter1Solution, parameter2Solution);
+            if(child.getCost() >= parameter1Solution.getCost()) {
+                child = parameter1Solution;
+            } else {
+                achievementScore.addCrossover(parameter1Solution.memeplex.getCrossover());
             }
+            utilityScore.addCrossover(parameter1Solution.memeplex.getCrossover());
             
-            if (Math.random() < 0.20)
+            child = Mutation.applyMutation(parameter1Solution.memeplex.getMutation(), parameter1Solution.memeplex.getMutationIntensity(), child);
+            if(child.getCost() < parameter1Solution.getCost()) {
+                achievementScore.addMutation(parameter1Solution.memeplex.getMutation());
+                achievementScore.addMutationIntensity(parameter1Solution.memeplex.getMutationIntensity());
+            }
+            utilityScore.addMutation(parameter1Solution.memeplex.getMutation());
+            utilityScore.addMutationIntensity(parameter1Solution.memeplex.getMutationIntensity());
+            
+            child = LocalSearch.applyLocalSearch(parameter1Solution.memeplex.getLocalSearch(), parameter1Solution.memeplex.getDepthOfLocalSearch(), child);
+            if(child.getCost() < parameter1Solution.getCost()) {
+                achievementScore.addLocalSearch(parameter1Solution.memeplex.getLocalSearch());
+                achievementScore.addDepthOfLocalSearch(parameter1Solution.memeplex.getDepthOfLocalSearch());
+            }
+            utilityScore.addLocalSearch(parameter1Solution.memeplex.getLocalSearch());
+            utilityScore.addDepthOfLocalSearch(parameter1Solution.memeplex.getDepthOfLocalSearch());
+            
+            if (bestMemeplex == null && Math.random() < 0.20)
                 child.memeplex = new Memeplex();
+                
             neighbourSet.add(child);
             numberOfNeighborsCreated++;
         }
