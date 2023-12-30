@@ -7,6 +7,7 @@ public class UtilityScore {
     private int PMX_Counter = 0;
     private int OX_Counter = 0;
     private int CX_Counter = 0;
+    private int NoneCrossover_Counter = 0;
     private int SwapRandom_Counter = 0;
     private int SwapBest_Counter = 0;
     private int ScrambleSwap_Counter = 0;
@@ -35,6 +36,7 @@ public class UtilityScore {
                 CX_Counter++;
                 break;
             default:
+                NoneCrossover_Counter++;
                 break;
         }
 
@@ -114,6 +116,10 @@ public class UtilityScore {
 
     public int getCX_Counter() {
         return CX_Counter;
+    }
+
+    public int getNoneCrossover_Counter() {
+        return NoneCrossover_Counter;
     }
 
     public int getSwapRandom_Counter() {
