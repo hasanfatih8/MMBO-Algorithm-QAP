@@ -71,22 +71,20 @@ public class Go {
                     // Set System.out to the new PrintStream
                     //System.setOut(printStream);
 
-                    UtilityScore allUtilityScores = new UtilityScore();
-                    UtilityScore allAchievementScores = new UtilityScore();
+                    SuccessRate successRate = new SuccessRate();
 
                     // BirdsAlgorithm instantiation here with the obtained parameters.
                     for(int i=0; i<15; i++) {
                         new BirdsAlgorithm(numberOfInitialSolutions, numberOfNeighborSolutions,
                                 numberOfTours, numberOfSharedWithNextSolution, 1, 1, 1, file);
-                        allUtilityScores.addUtilityScore(Solution.utilityScore);
-                        allAchievementScores.addUtilityScore(Solution.achievementScore);
+                        successRate.addSuccessRate(Solution.achievementScore, Solution.utilityScore);
                     }
                     
-                    Crossover bestCrossover = Memeplex.getBestCrossover(allAchievementScores, allUtilityScores);
-                    Mutation bestMutation = Memeplex.getBestMutation(allAchievementScores, allUtilityScores);
-                    LocalSearch bestLocalSearch = Memeplex.getBestLocalSearch(allAchievementScores, allUtilityScores);
-                    int bestDepthOfLocalSearch = Memeplex.getBestDepthOfLocalSearch(allAchievementScores, allUtilityScores);
-                    double bestMutationIntensity = Memeplex.getBestMutationIntensity(allAchievementScores, allUtilityScores);
+                    Crossover bestCrossover = Memeplex.getBestCrossover(successRate);
+                    Mutation bestMutation = Memeplex.getBestMutation(successRate);
+                    LocalSearch bestLocalSearch = Memeplex.getBestLocalSearch(successRate);
+                    int bestDepthOfLocalSearch = Memeplex.getBestDepthOfLocalSearch(successRate);
+                    double bestMutationIntensity = Memeplex.getBestMutationIntensity(successRate);
 
                     Solution.bestMemeplex = new Memeplex(bestCrossover, bestMutation, bestMutationIntensity, bestLocalSearch, bestDepthOfLocalSearch);
 
@@ -94,7 +92,6 @@ public class Go {
                         new BirdsAlgorithm(numberOfInitialSolutions, numberOfNeighborSolutions,
                                 numberOfTours, numberOfSharedWithNextSolution, 1, 1, 1, file);
                     }
-
                     // Restore the original System.out
                     System.setOut(originalSystemOut);
                     // Close the fileOutputStream

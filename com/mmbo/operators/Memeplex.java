@@ -1,6 +1,7 @@
 package com.mmbo.operators;
 import java.util.Random;
 
+import com.mmbo.SuccessRate;
 import com.mmbo.UtilityScore;
 /**
  * The `Memeplex` class defines enums for different types of crossover, mutation, and local search operations.
@@ -126,105 +127,105 @@ public class Memeplex {
         return depthOfLocalSearch;
     }
     
-    public static Crossover getBestCrossover(UtilityScore numeratorScore, UtilityScore denominator) {
-        double max = (double)numeratorScore.getCX_Counter() / (double)denominator.getCX_Counter();
+    public static Crossover getBestCrossover(SuccessRate successRate) {
+        double max = successRate.getAverageCXRatio();
         Crossover bestCrossover = Crossover.CX;
         
-        if (max < (double)numeratorScore.getOX_Counter() / (double)denominator.getOX_Counter()) {
-            max = (double)numeratorScore.getOX_Counter() / (double)denominator.getOX_Counter();
+        if (max < successRate.getAverageOXRatio()) {
+            max = successRate.getAverageOXRatio();
             bestCrossover = Crossover.OX;
         }
 
-        if (max < (double)numeratorScore.getPMX_Counter() / (double)denominator.getPMX_Counter()) {
-            max = (double)numeratorScore.getPMX_Counter() / (double)denominator.getPMX_Counter();
+        if (max < successRate.getAveragePMXRatio()) {
+            max = successRate.getAveragePMXRatio();
             bestCrossover = Crossover.PMX;
         }
 
-        if(max < (double)numeratorScore.getNoneCrossover_Counter() / (double)denominator.getNoneCrossover_Counter()) {
-            max = (double)numeratorScore.getNoneCrossover_Counter() / (double)denominator.getNoneCrossover_Counter();
+        if(max < successRate.getAverageNoneCrossoverRatio()) {
+            max = successRate.getAverageNoneCrossoverRatio();
             bestCrossover = Crossover.None;
         }
 
         return bestCrossover;
     }
 
-    public static Mutation getBestMutation(UtilityScore numeratorScore, UtilityScore denominator) {
-        double max = (double)numeratorScore.getSwapRandom_Counter() / (double)denominator.getSwapRandom_Counter();
+    public static Mutation getBestMutation(SuccessRate successRate) {
+        double max = successRate.getAverageSwapRandomRatio();
         Mutation bestMutation = Mutation.SwapRandom;
         
-        if (max < (double)numeratorScore.getSwapBest_Counter() / (double)denominator.getSwapBest_Counter()) {
-            max = (double)numeratorScore.getSwapBest_Counter() / (double)denominator.getSwapBest_Counter();
+        if (max < successRate.getAverageSwapBestRatio()) {
+            max = successRate.getAverageSwapBestRatio();
             bestMutation = Mutation.SwapBest;
         }
-
-        if (max < (double)numeratorScore.getScrambleSwap_Counter() / (double)denominator.getScrambleSwap_Counter()) {
-            max = (double)numeratorScore.getScrambleSwap_Counter() / (double)denominator.getScrambleSwap_Counter();
+        
+        if (max < successRate.getAverageScrambleSwapRatio()) {
+            max = successRate.getAverageScrambleSwapRatio();
             bestMutation = Mutation.ScrambleSwap;
         }
 
         return bestMutation;
     }
 
-    public static double getBestMutationIntensity(UtilityScore numeratorScore, UtilityScore denominator) {
-        double max = (double)numeratorScore.getMutationIntensity_0_2_Counter() / (double)denominator.getMutationIntensity_0_2_Counter();
+    public static double getBestMutationIntensity(SuccessRate successRate) {
+        double max = successRate.getAverageMutationIntensity_0_2_Ratio();
         double bestMutationIntensity = 0.2;
-        
-        if (max < (double)numeratorScore.getMutationIntensity_0_4_Counter() / (double)denominator.getMutationIntensity_0_4_Counter()) {
-            max = (double)numeratorScore.getMutationIntensity_0_4_Counter() / (double)denominator.getMutationIntensity_0_4_Counter();
+
+        if (max < successRate.getAverageMutationIntensity_0_4_Ratio()) {
+            max = successRate.getAverageMutationIntensity_0_4_Ratio();
             bestMutationIntensity = 0.4;
         }
 
-        if (max < (double)numeratorScore.getMutationIntensity_0_6_Counter() / (double)denominator.getMutationIntensity_0_6_Counter()) {
-            max = (double)numeratorScore.getMutationIntensity_0_6_Counter() / (double)denominator.getMutationIntensity_0_6_Counter();
+        if (max < successRate.getAverageMutationIntensity_0_6_Ratio()) {
+            max = successRate.getAverageMutationIntensity_0_6_Ratio();
             bestMutationIntensity = 0.6;
         }
-
-        if (max < (double)numeratorScore.getMutationIntensity_0_8_Counter() / (double)denominator.getMutationIntensity_0_8_Counter()) {
-            max = (double)numeratorScore.getMutationIntensity_0_8_Counter() / (double)denominator.getMutationIntensity_0_8_Counter();
+        
+        if (max < successRate.getAverageMutationIntensity_0_8_Ratio()) {
+            max = successRate.getAverageMutationIntensity_0_8_Ratio();
             bestMutationIntensity = 0.8;
         }
 
-        if (max < (double)numeratorScore.getMutationIntensity_1_Counter() / (double)denominator.getMutationIntensity_1_Counter()) {
-            max = (double)numeratorScore.getMutationIntensity_1_Counter() / (double)denominator.getMutationIntensity_1_Counter();
-            bestMutationIntensity = 1.0;
+        if (max < successRate.getAverageMutationIntensity_1_Ratio()) {
+            max = successRate.getAverageMutationIntensity_1_Ratio();
+            bestMutationIntensity = 1;
         }
 
         return bestMutationIntensity;
     }
 
-    public static LocalSearch getBestLocalSearch(UtilityScore numeratorScore, UtilityScore denominator) {
-        double max = (double)numeratorScore.getSwapFirstII_Counter() / (double)denominator.getSwapFirstII_Counter();
+    public static LocalSearch getBestLocalSearch(SuccessRate successRate) {
+        double max = successRate.getAverageSwapFirstIIRatio();
         LocalSearch bestLocalSearch = LocalSearch.SwapFirstII;
         
-        if (max < (double)numeratorScore.getSwapBestII_Counter() / (double)denominator.getSwapBestII_Counter()) {
-            max = (double)numeratorScore.getSwapBestII_Counter() / (double)denominator.getSwapBestII_Counter();
+        if (max < successRate.getAverageSwapBestIIRatio()) {
+            max = successRate.getAverageSwapBestIIRatio();
             bestLocalSearch = LocalSearch.SwapBestII;
         }
 
         return bestLocalSearch;
     }
 
-    public static int getBestDepthOfLocalSearch(UtilityScore numeratorScore, UtilityScore denominator) {
-        double max = (double)numeratorScore.getDepthOfLocalSearch_1_Counter() / (double)denominator.getDepthOfLocalSearch_1_Counter();
+    public static int getBestDepthOfLocalSearch(SuccessRate successRate) {
+        double max = successRate.getAverageDepthOfLocalSearch_1_Ratio();
         int bestDepthOfLocalSearch = 1;
         
-        if (max < (double)numeratorScore.getDepthOfLocalSearch_2_Counter() / (double)denominator.getDepthOfLocalSearch_2_Counter()) {
-            max = (double)numeratorScore.getDepthOfLocalSearch_2_Counter() / (double)denominator.getDepthOfLocalSearch_2_Counter();
+        if (max < successRate.getAverageDepthOfLocalSearch_2_Ratio()) {
+            max = successRate.getAverageDepthOfLocalSearch_2_Ratio();
             bestDepthOfLocalSearch = 2;
         }
 
-        if (max < (double)numeratorScore.getDepthOfLocalSearch_3_Counter() / (double)denominator.getDepthOfLocalSearch_3_Counter()) {
-            max = (double)numeratorScore.getDepthOfLocalSearch_3_Counter() / (double)denominator.getDepthOfLocalSearch_3_Counter();
+        if (max < successRate.getAverageDepthOfLocalSearch_3_Ratio()) {
+            max = successRate.getAverageDepthOfLocalSearch_3_Ratio();
             bestDepthOfLocalSearch = 3;
         }
 
-        if (max < (double)numeratorScore.getDepthOfLocalSearch_4_Counter() / (double)denominator.getDepthOfLocalSearch_4_Counter()) {
-            max = (double)numeratorScore.getDepthOfLocalSearch_4_Counter() / (double)denominator.getDepthOfLocalSearch_4_Counter();
+        if (max < successRate.getAverageDepthOfLocalSearch_4_Ratio()) {
+            max = successRate.getAverageDepthOfLocalSearch_4_Ratio();
             bestDepthOfLocalSearch = 4;
         }
 
-        if (max < (double)numeratorScore.getDepthOfLocalSearch_5_Counter() / (double)denominator.getDepthOfLocalSearch_5_Counter()) {
-            max = (double)numeratorScore.getDepthOfLocalSearch_5_Counter() / (double)denominator.getDepthOfLocalSearch_5_Counter();
+        if (max < successRate.getAverageDepthOfLocalSearch_5_Ratio()) {
+            max = successRate.getAverageDepthOfLocalSearch_5_Ratio();
             bestDepthOfLocalSearch = 5;
         }
 

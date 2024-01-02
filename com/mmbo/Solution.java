@@ -121,7 +121,7 @@ public class Solution implements Comparable, Cloneable {
             Solution child = Crossover.applyCrossover(parameter1Solution.memeplex.getCrossover(), parameter1Solution, parameter2Solution);
             if(child.getCost() >= parameter1Solution.getCost()) {
                 child = parameter1Solution;
-            } else {
+            }else {
                 achievementScore.addCrossover(parameter1Solution.memeplex.getCrossover());
             }
             utilityScore.addCrossover(parameter1Solution.memeplex.getCrossover());
@@ -136,6 +136,8 @@ public class Solution implements Comparable, Cloneable {
             
             child = LocalSearch.applyLocalSearch(parameter1Solution.memeplex.getLocalSearch(), parameter1Solution.memeplex.getDepthOfLocalSearch(), child);
             if(child.getCost() < parameter1Solution.getCost()) {
+                if(parameter1Solution.memeplex.getCrossover() == Memeplex.Crossover.None)
+                    achievementScore.addCrossover(parameter1Solution.memeplex.getCrossover()); // if none crossover is applied, then increase the achievement score of none crossover 
                 achievementScore.addLocalSearch(parameter1Solution.memeplex.getLocalSearch());
                 achievementScore.addDepthOfLocalSearch(parameter1Solution.memeplex.getDepthOfLocalSearch());
             }
