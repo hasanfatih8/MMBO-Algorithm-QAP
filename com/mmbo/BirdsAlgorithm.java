@@ -1,6 +1,8 @@
 package com.mmbo;
 import java.util.Arrays;
-import javax.swing.JOptionPane;
+
+import com.mmbo.operators.Memeplex;
+import com.mmbo.operators.Memeplex.*;
 
 public class BirdsAlgorithm extends MetaHeuristic{
     private int numberOfBirds; //# of birds, n
@@ -68,7 +70,35 @@ public class BirdsAlgorithm extends MetaHeuristic{
                 createInitialFlock();
                 Solution.resetNumberOfNeighborsCreated();
                 numberOfIterations = (int) Math.pow(Solution.getNumberOfTypes(), 3);
-                while (Solution.getNumberOfNeighborsCreated() < numberOfIterations) {
+
+                int numberOfExploration = numberOfIterations - (int) Math.pow(Solution.getNumberOfTypes(), 2);
+                SuccessRate successRate = new SuccessRate();
+                Solution.bestMemeplex = null;
+
+                while (Solution.getNumberOfNeighborsCreated() < numberOfExploration) {
+                    for (int i = 0; i < numberOfFlapping; i++) {
+                        flyFlock();
+                    }
+                    replaceLeader();
+                    sortTheSuccessors();
+                    leaderImproves = true;
+                }
+                successRate.addSuccessRate(Solution.achievementScore, Solution.utilityScore);
+                
+                Crossover bestCrossover = Memeplex.getBestCrossover(successRate);
+                System.out.println("Best crossover: " + bestCrossover);
+                Mutation bestMutation = Memeplex.getBestMutation(successRate);
+                System.out.println("Best mutation: " + bestMutation);
+                LocalSearch bestLocalSearch = Memeplex.getBestLocalSearch(successRate);
+                System.out.println("Best local search: " + bestLocalSearch);
+                int bestDepthOfLocalSearch = Memeplex.getBestDepthOfLocalSearch(successRate);
+                System.out.println("Best depth of local search: " + bestDepthOfLocalSearch);
+                double bestMutationIntensity = Memeplex.getBestMutationIntensity(successRate);
+                System.out.println("Best mutation intensity: " + bestMutationIntensity);
+
+                Solution.bestMemeplex = new Memeplex(bestCrossover, bestMutation, bestMutationIntensity, bestLocalSearch, bestDepthOfLocalSearch);
+
+                while (Solution.getNumberOfNeighborsCreated() < numberOfIterations-numberOfExploration) {
                     for (int i = 0; i < numberOfFlapping; i++) {
                         flyFlock();
                     }

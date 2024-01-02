@@ -71,24 +71,8 @@ public class Go {
                     // Set System.out to the new PrintStream
                     //System.setOut(printStream);
 
-                    SuccessRate successRate = new SuccessRate();
-
                     // BirdsAlgorithm instantiation here with the obtained parameters.
-                    for(int i=0; i<15; i++) {
-                        new BirdsAlgorithm(numberOfInitialSolutions, numberOfNeighborSolutions,
-                                numberOfTours, numberOfSharedWithNextSolution, 1, 1, 1, file);
-                        successRate.addSuccessRate(Solution.achievementScore, Solution.utilityScore);
-                    }
-                    
-                    Crossover bestCrossover = Memeplex.getBestCrossover(successRate);
-                    Mutation bestMutation = Memeplex.getBestMutation(successRate);
-                    LocalSearch bestLocalSearch = Memeplex.getBestLocalSearch(successRate);
-                    int bestDepthOfLocalSearch = Memeplex.getBestDepthOfLocalSearch(successRate);
-                    double bestMutationIntensity = Memeplex.getBestMutationIntensity(successRate);
-
-                    Solution.bestMemeplex = new Memeplex(bestCrossover, bestMutation, bestMutationIntensity, bestLocalSearch, bestDepthOfLocalSearch);
-
-                    for(int i=0; i<16; i++) {
+                    for(int i=0; i<31; i++) {
                         new BirdsAlgorithm(numberOfInitialSolutions, numberOfNeighborSolutions,
                                 numberOfTours, numberOfSharedWithNextSolution, 1, 1, 1, file);
                     }
