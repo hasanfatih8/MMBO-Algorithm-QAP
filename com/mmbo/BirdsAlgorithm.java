@@ -71,7 +71,7 @@ public class BirdsAlgorithm extends MetaHeuristic{
                 Solution.resetNumberOfNeighborsCreated();
                 numberOfIterations = (int) Math.pow(Solution.getNumberOfTypes(), 3);
 
-                int numberOfExploration = numberOfIterations - (int) Math.pow(Solution.getNumberOfTypes(), 2);
+                int numberOfExploration = (int) Math.pow(Solution.getNumberOfTypes(), 3)/4;
                 SuccessRate successRate = new SuccessRate();
                 Solution.bestMemeplex = null;
 

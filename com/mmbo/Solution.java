@@ -32,7 +32,7 @@ public class Solution implements Comparable, Cloneable {
     public Solution(int[][] affinity, int[][] distance) {
         this.affinity = affinity;
         this.distance = distance;
-        this.memeplex = bestMemeplex != null ? bestMemeplex : new Memeplex();
+        this.memeplex = new Memeplex();
         createRandomConf();
         calculateCost();
     }
@@ -109,6 +109,8 @@ public class Solution implements Comparable, Cloneable {
         neighbourSet = new ArrayList<Solution>();
         Solution parameter1Solution, parameter2Solution;
 
+
+
         if (this.getCost() < mate.getCost()) {
             parameter1Solution = this;
             parameter2Solution = mate;
@@ -116,33 +118,36 @@ public class Solution implements Comparable, Cloneable {
             parameter1Solution = mate;
             parameter2Solution = this;
         }
+
+        Memeplex applyingMemeplex = bestMemeplex != null ? bestMemeplex : parameter1Solution.memeplex;
+
         for (int i = 0; i < nongbr; i++) {
             // neighbourSet.add(randomSwapMutation());
-            Solution child = Crossover.applyCrossover(parameter1Solution.memeplex.getCrossover(), parameter1Solution, parameter2Solution);
+            Solution child = Crossover.applyCrossover(applyingMemeplex.getCrossover(), parameter1Solution, parameter2Solution);
             if(child.getCost() >= parameter1Solution.getCost()) {
                 child = parameter1Solution;
             }else {
-                achievementScore.addCrossover(parameter1Solution.memeplex.getCrossover());
+                achievementScore.addCrossover(applyingMemeplex.getCrossover());
             }
-            utilityScore.addCrossover(parameter1Solution.memeplex.getCrossover());
+            utilityScore.addCrossover(applyingMemeplex.getCrossover());
             
-            child = Mutation.applyMutation(parameter1Solution.memeplex.getMutation(), parameter1Solution.memeplex.getMutationIntensity(), child);
+            child = Mutation.applyMutation(applyingMemeplex.getMutation(), applyingMemeplex.getMutationIntensity(), child);
             if(child.getCost() < parameter1Solution.getCost()) {
-                achievementScore.addMutation(parameter1Solution.memeplex.getMutation());
-                achievementScore.addMutationIntensity(parameter1Solution.memeplex.getMutationIntensity());
+                achievementScore.addMutation(applyingMemeplex.getMutation());
+                achievementScore.addMutationIntensity(applyingMemeplex.getMutationIntensity());
             }
-            utilityScore.addMutation(parameter1Solution.memeplex.getMutation());
-            utilityScore.addMutationIntensity(parameter1Solution.memeplex.getMutationIntensity());
+            utilityScore.addMutation(applyingMemeplex.getMutation());
+            utilityScore.addMutationIntensity(applyingMemeplex.getMutationIntensity());
             
-            child = LocalSearch.applyLocalSearch(parameter1Solution.memeplex.getLocalSearch(), parameter1Solution.memeplex.getDepthOfLocalSearch(), child);
+            child = LocalSearch.applyLocalSearch(applyingMemeplex.getLocalSearch(), applyingMemeplex.getDepthOfLocalSearch(), child);
             if(child.getCost() < parameter1Solution.getCost()) {
-                if(parameter1Solution.memeplex.getCrossover() == Memeplex.Crossover.None)
-                    achievementScore.addCrossover(parameter1Solution.memeplex.getCrossover()); // if none crossover is applied, then increase the achievement score of none crossover 
-                achievementScore.addLocalSearch(parameter1Solution.memeplex.getLocalSearch());
-                achievementScore.addDepthOfLocalSearch(parameter1Solution.memeplex.getDepthOfLocalSearch());
+                if(applyingMemeplex.getCrossover() == Memeplex.Crossover.None)
+                    achievementScore.addCrossover(applyingMemeplex.getCrossover()); // if none crossover is applied, then increase the achievement score of none crossover 
+                achievementScore.addLocalSearch(applyingMemeplex.getLocalSearch());
+                achievementScore.addDepthOfLocalSearch(applyingMemeplex.getDepthOfLocalSearch());
             }
-            utilityScore.addLocalSearch(parameter1Solution.memeplex.getLocalSearch());
-            utilityScore.addDepthOfLocalSearch(parameter1Solution.memeplex.getDepthOfLocalSearch());
+            utilityScore.addLocalSearch(applyingMemeplex.getLocalSearch());
+            utilityScore.addDepthOfLocalSearch(applyingMemeplex.getDepthOfLocalSearch());
             
             if (bestMemeplex == null && Math.random() < 0.20)
                 child.memeplex = new Memeplex();
