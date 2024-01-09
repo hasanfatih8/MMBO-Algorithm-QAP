@@ -102,14 +102,26 @@ public class Solution implements Comparable, Cloneable {
         }
     }
 
+    public void createNeighborSet(int nongbr, Solution mate, AlgorithmMode mode) {
+        switch (mode) {
+            case MBO:
+                createNeighborSetMBO(nongbr);
+                break;
+            case MMMBOv1:
+            case MMMBOv2:
+                createNeighborSetMMMBO(nongbr, mate);
+                break;
+            default:
+                break;
+        }
+    }
+
     /**
      * cretaes a neighbor Set of this solution which includes non elements
      */
-    public void createNeighborSet(int nongbr, Solution mate) {
+    public void createNeighborSetMMMBO(int nongbr, Solution mate) {
         neighbourSet = new ArrayList<Solution>();
         Solution parameter1Solution, parameter2Solution;
-
-
 
         if (this.getCost() < mate.getCost()) {
             parameter1Solution = this;
@@ -153,6 +165,15 @@ public class Solution implements Comparable, Cloneable {
                 child.memeplex = new Memeplex();
                 
             neighbourSet.add(child);
+            numberOfNeighborsCreated++;
+        }
+        sortNeighbours();
+    }
+
+    public void createNeighborSetMBO(int nongbr) {
+        neighbourSet = new ArrayList<Solution>();
+        for (int i = 0; i < nongbr; i++) {
+            neighbourSet.add(Mutation.applyMutation(Memeplex.Mutation.SwapRandom, 0.2, this));
             numberOfNeighborsCreated++;
         }
         sortNeighbours();

@@ -1,5 +1,12 @@
 package com.mmbo;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import com.mmbo.operators.Memeplex;
 import com.mmbo.operators.Memeplex.*;
@@ -9,7 +16,7 @@ public class BirdsAlgorithm extends MetaHeuristic{
     private int numberOfNeighbors; //# of neighbors, k
     private int overLapFactor; //overlap factor, x
     private int numberOfIterations; //# of iterations, K (in this implementation, creating a neighbour counts for an iteration)
-    
+    private AlgorithmMode algorithmMode;
     private Population flock; 
 /*
     flock of birds (solutions) 0 is the leader and the following elements of the ArrayList(population) are listed as follows.  
@@ -44,26 +51,33 @@ public class BirdsAlgorithm extends MetaHeuristic{
     //Keep start time and end time for calculating the run time
     private long startTime;
     private double endTime;
+
+    private String outputPath;
     
     public BirdsAlgorithm(
             int numberOfBirds,
             int numberOfNeighbors,
             int numberOfFlapping,
             int overLapFactor,
+            AlgorithmMode algorithmMode,
             int initialFlockSortedAccToPerf,
             int leaderExchangeMode,
             int sortAccordingToPerformance,
-            String input) 
+            String input,
+            String outputPath) 
             {
                 this.numberOfBirds = numberOfBirds;
                 this.numberOfNeighbors = numberOfNeighbors;
                 this.overLapFactor = overLapFactor;
+                this.algorithmMode = algorithmMode;
                 this.initialFlockSortedAccToPerf = initialFlockSortedAccToPerf;
                 this.leaderExchangeMode = leaderExchangeMode;
                 this.sortAccordingToPerformance = sortAccordingToPerformance;
                 this.input = input;
+                this.outputPath = outputPath;
                 Solution.achievementScore = new UtilityScore();
                 Solution.utilityScore = new UtilityScore();
+                Solution.bestMemeplex = null;
                 checkInputFileFormatAndRead();
                 startTime = System.currentTimeMillis();
                 flock = new Population();
@@ -71,33 +85,37 @@ public class BirdsAlgorithm extends MetaHeuristic{
                 Solution.resetNumberOfNeighborsCreated();
                 numberOfIterations = (int) Math.pow(Solution.getNumberOfTypes(), 3);
 
-                int numberOfExploration = (int) Math.pow(Solution.getNumberOfTypes(), 3)/2;
-                SuccessRate successRate = new SuccessRate();
-                Solution.bestMemeplex = null;
+                if (algorithmMode == AlgorithmMode.MMMBOv2) {
 
-                while (Solution.getNumberOfNeighborsCreated() < numberOfExploration) {
-                    for (int i = 0; i < numberOfFlapping; i++) {
-                        flyFlock();
+                    int numberOfExploration = (int) Math.pow(Solution.getNumberOfTypes(), 3) / 2;
+                    SuccessRate successRate = new SuccessRate();
+
+                    while (Solution.getNumberOfNeighborsCreated() < numberOfExploration) {
+                        for (int i = 0; i < numberOfFlapping; i++) {
+                            flyFlock();
+                        }
+                        replaceLeader();
+                        sortTheSuccessors();
+                        leaderImproves = true;
                     }
-                    replaceLeader();
-                    sortTheSuccessors();
-                    leaderImproves = true;
+
+                    successRate.addSuccessRate(Solution.achievementScore, Solution.utilityScore);
+
+                    Crossover bestCrossover = Memeplex.getBestCrossover(successRate);
+                    System.out.println("Best crossover: " + bestCrossover);
+                    Mutation bestMutation = Memeplex.getBestMutation(successRate);
+                    System.out.println("Best mutation: " + bestMutation);
+                    LocalSearch bestLocalSearch = Memeplex.getBestLocalSearch(successRate);
+                    System.out.println("Best local search: " + bestLocalSearch);
+                    int bestDepthOfLocalSearch = Memeplex.getBestDepthOfLocalSearch(successRate);
+                    System.out.println("Best depth of local search: " + bestDepthOfLocalSearch);
+                    double bestMutationIntensity = Memeplex.getBestMutationIntensity(successRate);
+                    System.out.println("Best mutation intensity: " + bestMutationIntensity);
+
+                    Solution.bestMemeplex = new Memeplex(bestCrossover, bestMutation, bestMutationIntensity,
+                            bestLocalSearch, bestDepthOfLocalSearch);
                 }
-                successRate.addSuccessRate(Solution.achievementScore, Solution.utilityScore);
                 
-                Crossover bestCrossover = Memeplex.getBestCrossover(successRate);
-                System.out.println("Best crossover: " + bestCrossover);
-                Mutation bestMutation = Memeplex.getBestMutation(successRate);
-                System.out.println("Best mutation: " + bestMutation);
-                LocalSearch bestLocalSearch = Memeplex.getBestLocalSearch(successRate);
-                System.out.println("Best local search: " + bestLocalSearch);
-                int bestDepthOfLocalSearch = Memeplex.getBestDepthOfLocalSearch(successRate);
-                System.out.println("Best depth of local search: " + bestDepthOfLocalSearch);
-                double bestMutationIntensity = Memeplex.getBestMutationIntensity(successRate);
-                System.out.println("Best mutation intensity: " + bestMutationIntensity);
-
-                Solution.bestMemeplex = new Memeplex(bestCrossover, bestMutation, bestMutationIntensity, bestLocalSearch, bestDepthOfLocalSearch);
-
                 while (Solution.getNumberOfNeighborsCreated() < numberOfIterations) {
                     for (int i = 0; i < numberOfFlapping; i++) {
                         flyFlock();
@@ -146,10 +164,10 @@ public class BirdsAlgorithm extends MetaHeuristic{
 
         // Initialization phase
         leader = flock.get(0);
-        leader.createNeighborSet(numberOfNeighbors, flock.chooseRandomMate(0));
+        leader.createNeighborSet(numberOfNeighbors, flock.chooseRandomMate(0), algorithmMode);
 
         for (int i = 1; i < numberOfBirds; i++) {
-            flock.get(i).createNeighborSet(numberOfNeighbors - overLapFactor, flock.chooseRandomMate(i));
+            flock.get(i).createNeighborSet(numberOfNeighbors - overLapFactor, flock.chooseRandomMate(i), algorithmMode);
         }
         
         // Determine the best neighbors for the leader and the second bird
@@ -209,9 +227,9 @@ public class BirdsAlgorithm extends MetaHeuristic{
 
         //Solution leader,cs,besto;//best 1 used for repalcing the leader, best other used for transferring following birds
         leader = flock.get(0);
-        leader.createNeighborSet(numberOfNeighbors, flock.chooseRandomMate(0));
+        leader.createNeighborSet(numberOfNeighbors, flock.chooseRandomMate(0), algorithmMode);
         for (int i = 1; i < numberOfBirds; i++) {
-            flock.get(i).createNeighborSet(numberOfNeighbors - overLapFactor, flock.chooseRandomMate(i));
+            flock.get(i).createNeighborSet(numberOfNeighbors - overLapFactor, flock.chooseRandomMate(i), algorithmMode);
         }
 
         leader = flock.get(0);
@@ -368,11 +386,8 @@ public class BirdsAlgorithm extends MetaHeuristic{
             }
         };
 
-        // Specify the file path where you want to save the Excel file
-        String filePath = "results.xlsx";
-
         // Create an instance of ExcelWriter and call the appendResultsToExcel method
-        ExcelWriter.appendResultsToExcel(newData, filePath);
+        ExcelWriter.appendResultsToExcel(newData, outputPath);
         //JOptionPane.showMessageDialog(null, "Input file: " + input + "\nSolution Permutation: " + flock.getMin() + "\nCost of the solution: " + flock.getMin().getFitness() + "\nRun time: " + endTime + " seconds.");
     }
 

@@ -2,7 +2,13 @@ package com.mmbo;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.PrintStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
@@ -71,15 +77,52 @@ public class Go {
                     // Set System.out to the new PrintStream
                     //System.setOut(printStream);
 
-                    // BirdsAlgorithm instantiation here with the obtained parameters.
-                    for(int i=0; i<31; i++) {
+                    // Regex deseni
+                    String regexPattern = ".*/data_files/(.*?)\\.dat";
+
+                    // Regex eşleştirmeyi gerçekleştir
+                    Pattern pattern = Pattern.compile(regexPattern);
+                    Matcher matcher = pattern.matcher(file);
+
+                    // Eşleşme varsa yazdır
+                    if (matcher.find()) {
+                        // Kaynak dosyayı Path nesnesine dönüştür
+                        Path sourcePath = new File("results.xlsx").toPath();
+
+                        // Specify the file path where you want to save the Excel file
+                        String resultsPathMBO = "results_" + matcher.group(1) + "_MBO.xlsx";
+                        String resultsPathMMMBOv1 = "results_" + matcher.group(1) + "_MMMBOv1.xlsx";
+                        String resultsPathMMMBOv2 = "results_" + matcher.group(1) + "_MMMBOv2.xlsx";
+
+                        // Dosyayı kopyala
+                        try {
+                            Files.copy(sourcePath, new File(resultsPathMBO).toPath(), StandardCopyOption.REPLACE_EXISTING);
+                            Files.copy(sourcePath, new File(resultsPathMMMBOv1).toPath(), StandardCopyOption.REPLACE_EXISTING);
+                            Files.copy(sourcePath, new File(resultsPathMMMBOv2).toPath(), StandardCopyOption.REPLACE_EXISTING);
+                            System.out.println("Dosyalar oluşturuldu ");
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            fileOutputStream.close();
+                            throw new RuntimeException("Dosya oluşturulamadı");
+                        }
+
+                        // BirdsAlgorithm instantiation here with the obtained parameters.
+                        for(int i=0; i<31; i++) {
                         new BirdsAlgorithm(numberOfInitialSolutions, numberOfNeighborSolutions,
-                                numberOfTours, numberOfSharedWithNextSolution, 1, 1, 1, file);
+                                numberOfTours, numberOfSharedWithNextSolution, AlgorithmMode.MBO, 1, 1, 1, file, resultsPathMBO);
+                        new BirdsAlgorithm(numberOfInitialSolutions, numberOfNeighborSolutions,
+                                numberOfTours, numberOfSharedWithNextSolution, AlgorithmMode.MMMBOv1, 1, 1, 1, file, resultsPathMMMBOv1);
+                        new BirdsAlgorithm(numberOfInitialSolutions, numberOfNeighborSolutions,
+                                numberOfTours, numberOfSharedWithNextSolution, AlgorithmMode.MMMBOv2, 1, 1, 1, file, resultsPathMMMBOv2);
                     }
                     // Restore the original System.out
                     System.setOut(originalSystemOut);
                     // Close the fileOutputStream
                     fileOutputStream.close();
+                    } else {
+                        fileOutputStream.close();
+                        throw new RuntimeException("Dosya yolu geçersiz: Dosya yolu bu formatta olmalıdır /xxxx.dat");
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                     JOptionPane.showMessageDialog(null, "Wrong parameter format", "Error", JOptionPane.ERROR_MESSAGE);
