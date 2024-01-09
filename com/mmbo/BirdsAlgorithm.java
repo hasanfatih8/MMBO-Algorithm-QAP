@@ -71,7 +71,7 @@ public class BirdsAlgorithm extends MetaHeuristic{
                 Solution.resetNumberOfNeighborsCreated();
                 numberOfIterations = (int) Math.pow(Solution.getNumberOfTypes(), 3);
 
-                int numberOfExploration = (int) Math.pow(Solution.getNumberOfTypes(), 3)/4;
+                int numberOfExploration = (int) Math.pow(Solution.getNumberOfTypes(), 3)/2;
                 SuccessRate successRate = new SuccessRate();
                 Solution.bestMemeplex = null;
 
@@ -98,7 +98,7 @@ public class BirdsAlgorithm extends MetaHeuristic{
 
                 Solution.bestMemeplex = new Memeplex(bestCrossover, bestMutation, bestMutationIntensity, bestLocalSearch, bestDepthOfLocalSearch);
 
-                while (Solution.getNumberOfNeighborsCreated() < numberOfIterations-numberOfExploration) {
+                while (Solution.getNumberOfNeighborsCreated() < numberOfIterations) {
                     for (int i = 0; i < numberOfFlapping; i++) {
                         flyFlock();
                     }
