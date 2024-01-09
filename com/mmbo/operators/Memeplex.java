@@ -2,7 +2,6 @@ package com.mmbo.operators;
 import java.util.Random;
 
 import com.mmbo.SuccessRate;
-import com.mmbo.UtilityScore;
 /**
  * The `Memeplex` class defines enums for different types of crossover, mutation, and local search operations.
  */

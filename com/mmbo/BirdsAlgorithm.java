@@ -1,12 +1,5 @@
 package com.mmbo;
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import com.mmbo.operators.Memeplex;
 import com.mmbo.operators.Memeplex.*;

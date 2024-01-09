@@ -16,16 +16,13 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 
-import com.mmbo.operators.Memeplex;
-import com.mmbo.operators.Memeplex.*;
-
 import java.awt.GridLayout;
 
 public class Go {
     public static final boolean DEBUG_MODE = false;
 
     public static void main(String[] args) {
-        String file = "";
+        File[] files;
         String filePath = "logOutput.txt";
         // Step 1: Choose a QAP input file
         JOptionPane.showMessageDialog(null,
@@ -37,11 +34,12 @@ public class Go {
                         "\nNow please specify a QAP input file.",
                 "Multimeme Migrating Bird Optimization for QAP", JOptionPane.INFORMATION_MESSAGE);
 
-        JFileChooser fileChooser = new JFileChooser(new File("."));
+        JFileChooser fileChooser = new JFileChooser(new File("./data_files/"));
+        fileChooser.setMultiSelectionEnabled(true);
         int returnVal = fileChooser.showOpenDialog(null);
 
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            file = fileChooser.getSelectedFile().getAbsolutePath();
+            files = fileChooser.getSelectedFiles();
 
             // Step 2: Input parameters
             JPanel paramPanel = new JPanel(new GridLayout(0, 1));
@@ -54,7 +52,8 @@ public class Go {
             paramPanel.add(new JLabel("\nm - number of tours(10):"));
             JTextField mField = new JTextField("10", 5);
             paramPanel.add(mField);
-            paramPanel.add(new JLabel("\nx - number of neighbor solutions to be shared with the next solution(1):"));
+            paramPanel
+                    .add(new JLabel("\nx - number of neighbor solutions to be shared with the next solution(1):"));
             JTextField xField = new JTextField("1", 5);
             paramPanel.add(xField);
 
@@ -62,70 +61,84 @@ public class Go {
                     "Please enter the parameters of the algorithm", JOptionPane.OK_CANCEL_OPTION);
 
             if (paramResult == JOptionPane.OK_OPTION) {
-                try {
-                    int numberOfInitialSolutions = Integer.parseInt(nField.getText());
-                    int numberOfNeighborSolutions = Integer.parseInt(kField.getText());
-                    int numberOfTours = Integer.parseInt(mField.getText());
-                    int numberOfSharedWithNextSolution = Integer.parseInt(xField.getText());
 
-                    // Create a FileOutputStream to write to the file
-                    FileOutputStream fileOutputStream = new FileOutputStream(filePath);
-                    // Create a PrintStream that writes to the FileOutputStream
-                    PrintStream printStream = new PrintStream(fileOutputStream);
-                    // Save the current System.out
-                    PrintStream originalSystemOut = System.out;
-                    // Set System.out to the new PrintStream
-                    //System.setOut(printStream);
+                // Step 3: Run the algorithm
+                for (int j = 0; j < files.length; j++) {
+                    String file = files[j].getAbsolutePath();
 
-                    // Regex deseni
-                    String regexPattern = ".*/data_files/(.*?)\\.dat";
+                    try {
+                        int numberOfInitialSolutions = Integer.parseInt(nField.getText());
+                        int numberOfNeighborSolutions = Integer.parseInt(kField.getText());
+                        int numberOfTours = Integer.parseInt(mField.getText());
+                        int numberOfSharedWithNextSolution = Integer.parseInt(xField.getText());
 
-                    // Regex eşleştirmeyi gerçekleştir
-                    Pattern pattern = Pattern.compile(regexPattern);
-                    Matcher matcher = pattern.matcher(file);
+                        // Create a FileOutputStream to write to the file
+                        FileOutputStream fileOutputStream = new FileOutputStream(filePath);
+                        // Create a PrintStream that writes to the FileOutputStream
+                        //PrintStream printStream = new PrintStream(fileOutputStream);
+                        // Save the current System.out
+                        PrintStream originalSystemOut = System.out;
+                        // Set System.out to the new PrintStream
+                        // System.setOut(printStream);
 
-                    // Eşleşme varsa yazdır
-                    if (matcher.find()) {
-                        // Kaynak dosyayı Path nesnesine dönüştür
-                        Path sourcePath = new File("results.xlsx").toPath();
+                        // Regex deseni
+                        String regexPattern = ".*/data_files/(.*?)\\.dat";
 
-                        // Specify the file path where you want to save the Excel file
-                        String resultsPathMBO = "results_" + matcher.group(1) + "_MBO.xlsx";
-                        String resultsPathMMMBOv1 = "results_" + matcher.group(1) + "_MMMBOv1.xlsx";
-                        String resultsPathMMMBOv2 = "results_" + matcher.group(1) + "_MMMBOv2.xlsx";
+                        // Regex eşleştirmeyi gerçekleştir
+                        Pattern pattern = Pattern.compile(regexPattern);
+                        Matcher matcher = pattern.matcher(file);
 
-                        // Dosyayı kopyala
-                        try {
-                            Files.copy(sourcePath, new File(resultsPathMBO).toPath(), StandardCopyOption.REPLACE_EXISTING);
-                            Files.copy(sourcePath, new File(resultsPathMMMBOv1).toPath(), StandardCopyOption.REPLACE_EXISTING);
-                            Files.copy(sourcePath, new File(resultsPathMMMBOv2).toPath(), StandardCopyOption.REPLACE_EXISTING);
-                            System.out.println("Dosyalar oluşturuldu ");
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        // Eşleşme varsa yazdır
+                        if (matcher.find()) {
+                            // Kaynak dosyayı Path nesnesine dönüştür
+                            Path sourcePath = new File("results.xlsx").toPath();
+
+                            // Specify the file path where you want to save the Excel file
+                            String resultsPathMBO = "results_" + matcher.group(1) + "_MBO.xlsx";
+                            String resultsPathMMMBOv1 = "results_" + matcher.group(1) + "_MMMBOv1.xlsx";
+                            String resultsPathMMMBOv2 = "results_" + matcher.group(1) + "_MMMBOv2.xlsx";
+
+                            // Dosyayı kopyala
+                            try {
+                                Files.copy(sourcePath, new File(resultsPathMBO).toPath(),
+                                        StandardCopyOption.REPLACE_EXISTING);
+                                Files.copy(sourcePath, new File(resultsPathMMMBOv1).toPath(),
+                                        StandardCopyOption.REPLACE_EXISTING);
+                                Files.copy(sourcePath, new File(resultsPathMMMBOv2).toPath(),
+                                        StandardCopyOption.REPLACE_EXISTING);
+                                System.out.println("Dosyalar oluşturuldu ");
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                                fileOutputStream.close();
+                                throw new RuntimeException("Dosya oluşturulamadı");
+                            }
+
+                            // BirdsAlgorithm instantiation here with the obtained parameters.
+                            for (int i = 0; i < 31; i++) {
+                                new BirdsAlgorithm(numberOfInitialSolutions, numberOfNeighborSolutions,
+                                        numberOfTours, numberOfSharedWithNextSolution, AlgorithmMode.MBO, 1, 1, 1, file,
+                                        resultsPathMBO);
+                                new BirdsAlgorithm(numberOfInitialSolutions, numberOfNeighborSolutions,
+                                        numberOfTours, numberOfSharedWithNextSolution, AlgorithmMode.MMMBOv1, 1, 1, 1,
+                                        file, resultsPathMMMBOv1);
+                                new BirdsAlgorithm(numberOfInitialSolutions, numberOfNeighborSolutions,
+                                        numberOfTours, numberOfSharedWithNextSolution, AlgorithmMode.MMMBOv2, 1, 1, 1,
+                                        file, resultsPathMMMBOv2);
+                            }
+                            // Restore the original System.out
+                            System.setOut(originalSystemOut);
+                            // Close the fileOutputStream
                             fileOutputStream.close();
-                            throw new RuntimeException("Dosya oluşturulamadı");
+                        } else {
+                            fileOutputStream.close();
+                            throw new RuntimeException(
+                                    "Dosya yolu geçersiz: Dosya yolu bu formatta olmalıdır /xxxx.dat");
                         }
-
-                        // BirdsAlgorithm instantiation here with the obtained parameters.
-                        for(int i=0; i<31; i++) {
-                        new BirdsAlgorithm(numberOfInitialSolutions, numberOfNeighborSolutions,
-                                numberOfTours, numberOfSharedWithNextSolution, AlgorithmMode.MBO, 1, 1, 1, file, resultsPathMBO);
-                        new BirdsAlgorithm(numberOfInitialSolutions, numberOfNeighborSolutions,
-                                numberOfTours, numberOfSharedWithNextSolution, AlgorithmMode.MMMBOv1, 1, 1, 1, file, resultsPathMMMBOv1);
-                        new BirdsAlgorithm(numberOfInitialSolutions, numberOfNeighborSolutions,
-                                numberOfTours, numberOfSharedWithNextSolution, AlgorithmMode.MMMBOv2, 1, 1, 1, file, resultsPathMMMBOv2);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        JOptionPane.showMessageDialog(null, "Wrong parameter format", "Error",
+                                JOptionPane.ERROR_MESSAGE);
                     }
-                    // Restore the original System.out
-                    System.setOut(originalSystemOut);
-                    // Close the fileOutputStream
-                    fileOutputStream.close();
-                    } else {
-                        fileOutputStream.close();
-                        throw new RuntimeException("Dosya yolu geçersiz: Dosya yolu bu formatta olmalıdır /xxxx.dat");
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    JOptionPane.showMessageDialog(null, "Wrong parameter format", "Error", JOptionPane.ERROR_MESSAGE);
                 }
             }
         }
